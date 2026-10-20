@@ -1,0 +1,4 @@
+*.png
+*.coffea
+*old_plots*
+*__pycache__*

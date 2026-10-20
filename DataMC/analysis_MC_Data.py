@@ -1,12 +1,14 @@
 import awkward as ak
 import numpy as np
 from coffea import processor
+from selection_base import SelectionBase
 import hist
 import uproot
 import hashlib
 import gzip
 import correctionlib
 import fnmatch
+
 
 class StopAnalysisMC_Data(processor.ProcessorABC):
 
@@ -103,9 +105,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         dataset = events.metadata["dataset"]
         process, sample, year = dataset.split("__")
 
-        path = "/users/scormenier/stp/MC_Data/Reweighting/PU/" + year + "_UL/puWeights.json.gz"
-        with gzip.open(path, "rt") as f:
-            pu_json_str = f.read().strip()
+        #path = "/users/scormenier/stp/MC_Data/Reweighting/PU/" + year + "_UL/puWeights.json.gz"
+        #with gzip.open(path, "rt") as f:
+        #    pu_json_str = f.read().strip()
 
         jme_path = "/users/scormenier/stp/MC_Data/Reweighting/JME/"
 
@@ -298,13 +300,14 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "PFMET120_PFMHT120_IDTight_PFHT60",
         ]
 
+        # Why this veto jet?
         veto_jets = events.Jet[
             (events.Jet.pt > 30) & (abs(events.Jet.eta) < 2.4) & (events.Jet.jetId >= 2)
         ]
 
         #Apply jet veto mask using the vetomap correction
         get_veto_mask = get_veto_map_mask(veto_jets, vetomap_corr, map_name="jetvetomap")
-        events = events[~get_veto_mask]
+        # events = events[~get_veto_mask] """ Commented until figured out why this jet veto """
 
         # Flag events belonging to the HEM-affected period (data: runs >= 319077,
         # MC: deterministic random fraction matching the affected lumi fraction)
@@ -320,7 +323,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
             # Object-level HEM veto (unchanged logic)
             veto = hem_event_veto_mask(events)
-            events = events[~(events.in_hem_period & veto)]
+            # events = events[~(events.in_hem_period & veto)] """ Commented until figured out """
 
         # # Apply HEM veto for 2018 data and MC
         # if year == "2018":
@@ -358,7 +361,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             else:
                 print(f"Warning: Flag_{flag} not found in {dataset}, skipping")
 
-        events = events[met_filter_mask]
+        # events = events[met_filter_mask] """Commented until understood """
 
         jets = events.Jet
         muons = events.Muon
@@ -458,21 +461,34 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         met_cleaning_calo = (abs((met.pt/CaloMet.pt) - 1))
         met_cleaning_chged = dphi(ChgedMet.phi, met.phi)
 
+        """ # commented to try out selection base helper class
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) &
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            (ak.sum(taus.idDeepTau2017v2p1VSjet >= 1, axis=1) == 0) &
-            (ak.sum(muons.looseId == 1, axis=1) == 0) &
-            (ak.sum(electrons.cutBased > 0, axis=1) == 0) &
+            (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
+            (((ak.sum(muons.looseId == 1, axis=1) == 1) & (ak.sum(electrons.cutBased > 0, axis=1) == 0 )) |
+            ((ak.sum(muons.looseId == 1, axis=1) == 0) & (ak.sum(electrons.cutBased > 0, axis=1) == 1 )))
             (np.array(Ht) > 200) &
-            (abs(dphi_jet1) > 0.5) &
-            (jet2_missing | (abs(dphi_jet2) > 0.5)) &
-            (jet3_missing | (abs(dphi_jet3) > 0.25)) &
-            (jet4_missing | (abs(dphi_jet4) > 0.25)) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0)
+        )
+        """
+        selection_base = SelectionBase(events, year=year, is_data=is_data).build(
+            jet1_pt=jet1_pt,
+            n_iso_tracks=n_IsoTracks,
+            n_jets=n_jets,
+            met=met,
+            taus=taus,
+            muons=muons,
+            electrons=electrons,
+            ht=Ht,
+            met_cleaning_calo=met_cleaning_calo,
+            met_cleaning_chged=met_cleaning_chged,
+            extra_masks=[~hem_met_phi_veto],
+            apply_trigger=is_data,
+            trigger_pass=get_trigger_or(events, TRIGGER_PATTERNS) if is_data else None,
         )
         selection_base = selection_base & ~hem_met_phi_veto
 
@@ -505,7 +521,12 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 print(f"genWeight not found in {dataset}, using genw=1")
                 genw = np.ones(len(events))
 
+            # Remove when implementing pileup back
+            nTrueInt = ak.to_numpy(ak.fill_none(1, 0.0)).astype(np.float64)
 
+
+            """
+            # Commenting section to temporarily remove PU reweighting
             pu_cset = correctionlib._core.CorrectionSet.from_string(pu_json_str)
             pu_corr = pu_cset[PUkey]
             nTrueInt = ak.to_numpy(ak.fill_none(events.Pileup.nTrueInt, 0.0)).astype(np.float64)
@@ -514,6 +535,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             # pu_weight_up      = np.array([pu_corr.evaluate(float(x), "up")      for x in nTrueInt])
             # pu_weight_down     = np.array([pu_corr.evaluate(float(x), "down")   for x in nTrueInt])
             genw = genw * pu_weight_nominal  # apply nominal PU weight to genWeight
+            """
             weights = genw * lumi * xsec / Ngen
         has_jet2 = n_jets >= 2
         has_jet3 = n_jets >= 3
