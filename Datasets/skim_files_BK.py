@@ -8,7 +8,7 @@ import numpy as np
 # --------------------
 # Config
 # --------------------
-OUTPUT_DIR = "/STORE/stopSamples/temp_skim"
+OUTPUT_DIR = "/STORE/elarieke/temp_skim"
 TREE_NAME  = "Events"
 
 BRANCHES_TO_KEEP = {
@@ -37,10 +37,15 @@ def make_good_jets(jets, year):
     return good_jets
 
 
+#def make_good_leptons(leptons):
+#    good_leptons= leptons[]
+
 def compute_selection(events, year, jets):
     muons = events.Muon
+    # print(type(muons))
     electrons = events.Electron
     met = events.MET
+    # print(type(met))
     taus = events.Tau
     isotracks = events.IsoTrack
     CaloMet = events.CaloMET
@@ -94,17 +99,16 @@ def compute_selection(events, year, jets):
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            (ak.sum(muons.looseId == 1, axis=1) == 0) &
-            (ak.sum(electrons.cutBased > 0, axis=1) == 0) &
-            (np.array(Ht) > 200) &
-            (abs(dphi_jet1) > 0.5) &
-            (jet2_missing | (abs(dphi_jet2) > 0.5)) &
-            (jet3_missing | (abs(dphi_jet3) > 0.25)) &
-            (jet4_missing | (abs(dphi_jet4) > 0.25)) &
-            (met_cleaning_calo < 0.5) &
-            (abs(met_cleaning_chged) < 2.0)
+            (((ak.sum(muons.mediumId == 1, axis=1) == 1) & (ak.sum(electrons.cutBased > 0, axis=1) == 0 )) | 
+            ((ak.sum(muons.mediumId == 1, axis=1) == 0) & (ak.sum(electrons.cutBased > 0, axis=1) == 1 ))) &
+            (np.array(Ht) > 200) #&
+            #(abs(dphi_jet1) > 0.5) &
+            #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
+            #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
+            #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
+            #(met_cleaning_calo < 0.5) &
+            #(abs(met_cleaning_chged) < 2.0)
         )
-        
     return selection
 
 # --------------------
@@ -160,27 +164,28 @@ def skim_file(input_path, output_path, year):
 # Main loop over fileset
 # --------------------
 def main():
-    with open("/users/scormenier/stp/Datasets/samples.json") as f:
+    with open("./lepton_samples.json") as f:
         samples = json.load(f)
 
     file_list = []  # list of (input_path, output_path, year)
 
     for process in samples["MC"]:
         for sample in samples["MC"][process]:
-            if process == "DYJetsToLL_M-50" or process == "GJets_DR-0p4" or (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
-                for year, info in samples["MC"][process][sample].items():
-                    if year != "2018":   # restrict for this small test
-                        continue
+#            if process == "DYJetsToLL_M-50" or process == "GJets_DR-0p4" or (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
+#            if (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
+            for year, info in samples["MC"][process][sample].items():
+                if year != "2018":   # restrict for this small test
+                    continue
 
-                    for input_path in info["files"]:
-                        # build a matching output filename, keeping same basename
-                        basename = os.path.basename(input_path)
-                        sample_dir = os.path.join(OUTPUT_DIR, sample)
-                        os.makedirs(sample_dir, exist_ok=True)
+                for input_path in info["files"]:
+                    # build a matching output filename, keeping same basename
+                    basename = os.path.basename(input_path)
+                    sample_dir = os.path.join(OUTPUT_DIR, sample)
+                    os.makedirs(sample_dir, exist_ok=True)
 
-                        output_path = os.path.join(sample_dir, basename)
-                        file_list.append((input_path, output_path, year))
-                        print(output_path)
+                    output_path = os.path.join(sample_dir, basename)
+                    file_list.append((input_path, output_path, year))
+                    print(output_path)
 
     for input_path, output_path, year in file_list:
         if year == "2018":

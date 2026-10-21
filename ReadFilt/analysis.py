@@ -157,15 +157,14 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            (ak.sum(muons.looseId == 1, axis=1) == 0) &
-            (ak.sum(electrons.cutBased > 0, axis=1) == 0) &
-            (np.array(Ht) > 200) &
-            (abs(dphi_jet1) > 0.5) &
-            (jet2_missing | (abs(dphi_jet2) > 0.5)) &
-            (jet3_missing | (abs(dphi_jet3) > 0.25)) &
-            (jet4_missing | (abs(dphi_jet4) > 0.25)) &
-            (met_cleaning_calo < 0.5) &
-            (abs(met_cleaning_chged) < 2.0)
+            ((ak.sum(muons.looseId == 1, axis=1) >= 1) | (ak.sum(electrons.cutBased > 0, axis=1) >= 1)) &
+            (np.array(Ht) > 200) #&
+            #(abs(dphi_jet1) > 0.5) &
+            #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
+            #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
+            #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
+            #(met_cleaning_calo < 0.5) &
+            #(abs(met_cleaning_chged) < 2.0)
         )
 
         # --------------------

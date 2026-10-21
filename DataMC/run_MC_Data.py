@@ -8,7 +8,7 @@ import sys
 import psutil
 import os
 
-with open("/users/scormenier/stp/Datasets/samples.json") as f:
+with open("../Datasets/lepton_samples.json") as f:
     samples = json.load(f)
 
 chosen_year = "2018"
