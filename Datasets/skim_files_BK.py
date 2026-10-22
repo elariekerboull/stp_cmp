@@ -15,6 +15,8 @@ BRANCHES_TO_KEEP = {
     "Jet": ["pt", "eta", "qgl", "nConstituents", "mass", "phi"],
     "MET": ["pt", "significance", "phi"],
     "event_level": ["genWeight", "run", "luminosityBlock", "event"],
+    "Muon": ["pt", "eta", "pfRelIso03_all", "phi", "charge", "mediumId", "looseId", "softId", "tightId", "dxy", "dz"],
+    "Electron": ["pt", "eta", "pfRelIso03_all", "phi", "charge", "cutBased", "dxy", "dz"],
 }
 
 # --------------------
@@ -42,10 +44,8 @@ def make_good_jets(jets, year):
 
 def compute_selection(events, year, jets):
     muons = events.Muon
-    # print(type(muons))
     electrons = events.Electron
     met = events.MET
-    # print(type(met))
     taus = events.Tau
     isotracks = events.IsoTrack
     CaloMet = events.CaloMET
@@ -99,8 +99,8 @@ def compute_selection(events, year, jets):
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            (((ak.sum(muons.mediumId == 1, axis=1) == 1) & (ak.sum(electrons.cutBased > 0, axis=1) == 0 )) | 
-            ((ak.sum(muons.mediumId == 1, axis=1) == 0) & (ak.sum(electrons.cutBased > 0, axis=1) == 1 ))) &
+            (((ak.sum(muons[muons.mediumId], axis=1) == 1) & (ak.sum(electrons[electrons.cutBased > 0], axis=1) == 0 )) | 
+            ((ak.sum(muons[muons.mediumId], axis=1) == 0) & (ak.sum(electrons[electrons.cutBased > 0], axis=1) == 1 ))) &
             (np.array(Ht) > 200) #&
             #(abs(dphi_jet1) > 0.5) &
             #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
