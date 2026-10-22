@@ -76,6 +76,13 @@ class StopAnalysisProcessorSkimmed(processor.ProcessorABC):
         jet1_pt = ak.fill_none(ak.pad_none(events.Jet_pt, 5)[:, 0], np.nan)
         jet1_phi = ak.fill_none(ak.pad_none(events.Jet_phi, 5)[:, 0], np.nan)
         jet1_eta = ak.fill_none(ak.pad_none(events.Jet_eta, 5)[:, 0], np.nan)
+        if ak.sum(muons.mediumId == 1, axis=1) == 1:
+            # One muon in event
+            lepton = events.Muon
+        else:
+            # One electron expected instead
+            lepton = events.Electron
+
 
         # --------------------
         # 4. Weights
@@ -141,6 +148,87 @@ class StopAnalysisProcessorSkimmed(processor.ProcessorABC):
             njet=n_jets,
             weight=weights
         )
+
+        self._accumulator["pt_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.pt,
+            weight=weights
+        )
+
+        self._accumulator["phi_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.phi,
+            weight=weights
+        )
+
+        self._accumulator["eta_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.eta,
+            weight=weights
+        )
+
+        self._accumulator["charge_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.charge,
+            weight=weights
+        )
+
+        # Think - plot muon IDs all together?
+        self._accumulator["muon_looseID"].fill(
+            process=process,
+            year=year,
+            njet=events.Muon.looseId,
+            weight=weights
+        )
+
+        self._accumulator["muon_mediumID"].fill(
+            process=process,
+            year=year,
+            njet=events.Muon.mediumId,
+            weight=weights
+        )
+
+        self._accumulator["muon_tightID"].fill(
+            process=process,
+            year=year,
+            njet=events.Muon.tightId,
+            weight=weights
+        )
+
+        self._accumulator["RelIso_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.jetRelIso,
+            weight=weights
+        )
+
+        self._accumulator["dxy_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.dxy,
+            weight=weights
+        )
+
+        self._accumulator["dz_lepton"].fill(
+            process=process,
+            year=year,
+            njet=lepton.dz,
+            weight=weights
+        )
+
+        self._accumulator["electron_cutbased"].fill(
+            process=process,
+            year=year,
+            njet=events.Electron.cutBased,
+            weight=weights
+        )
+
+
+
 
         # self._accumulator["cut_electrons"].fill(
         #     process=process,
