@@ -5,7 +5,7 @@ from analysis import StopAnalysisProcessorSMSLess
 import coffea.util as util
 
 # Load samples
-with open("../Datasets/lepton_samples.json") as f:
+with open("../Datasets/small_samples.json") as f:
     samples = json.load(f)
 
 fileset = {}
@@ -31,7 +31,7 @@ processor_instance = StopAnalysisProcessorSMSLess(samples)
 
 # Runner
 runner = processor.Runner(
-    executor=processor.FuturesExecutor(workers=16),
+    executor=processor.FuturesExecutor(workers=4),
     schema=NanoAODSchema,
     skipbadfiles=True,
 )
