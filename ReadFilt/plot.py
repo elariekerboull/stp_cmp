@@ -35,23 +35,32 @@ def plot_2d_histogram(histogram, hist_name, x_label, y_label, log=False):
                if "RelIso_lepton" in h_total.axes.name
                else h_total.axes["AbsIso_lepton"].edges)
 
-    # mask empty bins so they are drawn with the colormap's "bad" colour
-    values = np.ma.masked_where(values <= 0, values)
+    total = values.sum()
+    if total > 0:
+        values = values / total
 
-    cmap = plt.get_cmap("viridis").copy()   # copy: don't modify the global colormap
+    # mask empty bins so they are drawn white
+    values = np.ma.masked_where(values <= 0, values)
+    cmap = plt.get_cmap("viridis").copy()
+    #cmap = plt.get_cmap("cividis").copy() # colourblind 'friendly' colourmap
     cmap.set_bad("white")
+
+    # colour scale limits: default to this histogram's own range
+    vmin = values.min()
+    vmax = values.max()
+    norm = LogNorm(vmin=vmin, vmax=vmax)
+    kw = {"norm": norm}
 
     fig, ax = plt.subplots(figsize=(7, 5))
     ax.set_facecolor("white")
-    mesh = ax.pcolormesh(
-        x_edges, y_edges, values.T, shading="auto", cmap=cmap,
-        norm=LogNorm() if log else None,
-    )
+    mesh = ax.pcolormesh(x_edges, y_edges, values.T,
+                         shading="auto", cmap=cmap, **kw)
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.set_title(f"{hist_name} ({year})")
-    fig.colorbar(mesh, ax=ax, label="Weighted events")
+    fig.colorbar(mesh, ax=ax,
+                 label="Fraction of weighted events / bin")
 
     save_path = os.path.join(output_dir, f"{hist_name}_{year}.png")
     plt.tight_layout()
