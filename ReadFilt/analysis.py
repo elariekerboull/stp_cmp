@@ -201,10 +201,12 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
         jet4_pt = ak.fill_none(good_jets_pad[:, 3].pt, np.nan)
         Ht = ak.sum(good_jets.pt, axis=1)
         jet1_eta = ak.fill_none(good_jets_pad[:, 0].eta, np.nan)
+        jet1_phi = ak.fill_none(good_jets_pad[:, 0].phi, np.nan)
+        """
+        # Jets related
         jet2_eta = ak.fill_none(good_jets_pad[:, 1].eta, np.nan)
         jet3_eta = ak.fill_none(good_jets_pad[:, 2].eta, np.nan)
         jet4_eta = ak.fill_none(good_jets_pad[:, 3].eta, np.nan)
-        jet1_phi = ak.fill_none(good_jets_pad[:, 0].phi, np.nan)
         jet2_phi = ak.fill_none(good_jets_pad[:, 1].phi, np.nan)
         jet3_phi = ak.fill_none(good_jets_pad[:, 2].phi, np.nan)
         jet4_phi = ak.fill_none(good_jets_pad[:, 3].phi, np.nan)
@@ -219,7 +221,7 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
         jet2_missing = np.isnan(dphi_jet2)
         jet3_missing = np.isnan(dphi_jet3)
         jet4_missing = np.isnan(dphi_jet4)
-
+        """
         met_cleaning_calo = (abs((met.pt/CaloMet.pt) - 1))
         met_cleaning_chged = dphi(ChgedMet.phi, met.phi)
         
@@ -242,13 +244,14 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
             ((n_muons + n_electrons) == 1) &            
-            (np.array(Ht) > 200) #&
+            (np.array(Ht) > 200) &
+            (met_cleaning_calo < 0.5) &
+            (abs(met_cleaning_chged) < 2.0)
+            # Only for non-leptonic case
             #(abs(dphi_jet1) > 0.5) &
             #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
             #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
             #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
-            #(met_cleaning_calo < 0.5) &
-            #(abs(met_cleaning_chged) < 2.0)
         )
         selection_electron = (n_electrons == 1) & (n_muons == 0)
         selection_muon = (n_muons == 1) & (n_electrons == 0)
@@ -257,11 +260,8 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
             return ak.zip(
                 {"pt": newlep.pt, "eta": newlep.eta, "phi": newlep.phi,
                 "pfRelIso03_all": newlep.pfRelIso03_all, "charge": newlep.charge, "dxy": newlep.dxy, "dz": newlep.dz},
-            #    with_name="PtEtaPhiMCandidate",
-            #    behavior=events.behavior,
             )
 
-        # leptons = ak.concatenate([convert_lepton(muons[muons.mediumId]), convert_lepton(electrons[electrons.cutBased > 0])], axis=1) #Backed up just in case
         
         leptons = ak.concatenate([convert_lepton(muons[muons.mediumId & good_iso_muon]), convert_lepton(electrons[(electrons.cutBased > 0) & good_iso_electron])], axis=1)
         # 4. Weights

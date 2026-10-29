@@ -9,7 +9,7 @@ import fnmatch
 # --------------------
 # Config
 # --------------------
-OUTPUT_DIR = "/STORE/stopSamples/Skimmed_Samples/2018/NewData"
+OUTPUT_DIR = "/STORE/elarieke/temp_skim"
 TREE_NAME  = "Events"
 
 BRANCHES_TO_KEEP = {
@@ -94,10 +94,16 @@ def compute_selection(events, year, jets):
     # --------------------
 
     n_IsoTracks = ak.num(refined_isotracks)
+    n_IsoTracks = ak.num(refined_isotracks)
     n_jets = ak.num(jets)
     good_jets_pad = ak.pad_none(jets, 5)
+
+    # Jet 1 variable selection
     jet1_pt = ak.fill_none(good_jets_pad[:, 0].pt, np.nan)
     Ht = ak.sum(jets.pt, axis=1)
+    
+    """
+    # Jet related code
     jet1_phi = ak.fill_none(good_jets_pad[:, 0].phi, np.nan)
     jet2_phi = ak.fill_none(good_jets_pad[:, 1].phi, np.nan)
     jet3_phi = ak.fill_none(good_jets_pad[:, 2].phi, np.nan)
@@ -111,10 +117,22 @@ def compute_selection(events, year, jets):
     jet2_missing = np.isnan(dphi_jet2)
     jet3_missing = np.isnan(dphi_jet3)
     jet4_missing = np.isnan(dphi_jet4)
+    """
+    
 
     met_cleaning_calo = (abs((met.pt/CaloMet.pt) - 1))
     met_cleaning_chged = dphi(ChgedMet.phi, met.phi)
 
+    #Isolation condition
+    good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
+    good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
+
+    # Cutbased electrons and medium muonID with isolation condition
+    good_electrons = (electrons.cutBased > 0) & good_iso_electron
+    good_muons = (muons.mediumId) & good_iso_muon
+
+    n_electrons = ak.sum(good_electrons, axis=1)
+    n_muons = ak.sum(good_muons,axis=1)
     
     pre_selection = (
             (np.array(jet1_pt) > 110) &
@@ -122,20 +140,15 @@ def compute_selection(events, year, jets):
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            (ak.sum(muons.looseId == 1, axis=1) == 0) &
-            (ak.sum(electrons.cutBased > 0, axis=1) == 0) &
+            ((n_muons + n_electrons) == 1) &            
             (np.array(Ht) > 200) &
-            (abs(dphi_jet1) > 0.5) &
-            (jet2_missing | (abs(dphi_jet2) > 0.5)) &
-            (jet3_missing | (abs(dphi_jet3) > 0.25)) &
-            (jet4_missing | (abs(dphi_jet4) > 0.25)) &
             (met_cleaning_calo < 0.5) &
-            (abs(met_cleaning_chged) < 2.0)
+            (abs(met_cleaning_chged) < 2.0) 
         )
 
     trigger_patterns = [
-        "PFMET120_PFMHT120_IDTight",
-        "PFMET120_PFMHT120_IDTight_PFHT60",
+        "HLT PFMET120 PFMHT120 IDTight",
+        "HLT PFMET120 PFMHT120 IDTight PFHT60",
     ]
     trigger_pass = get_trigger_or(events, trigger_patterns)
     selection = pre_selection & trigger_pass
