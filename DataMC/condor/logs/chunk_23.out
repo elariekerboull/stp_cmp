@@ -1,0 +1,8 @@
+  Preprocessing 100% ━━━━━━━━━━━━━━ 138/138 [ 0:01:15 < 0:00:00 | 2.0   file/s ]
+Merging (local)   1%                  1/138 [ 0:01:15 < -:--:-- | ?   merges/s ]
+     Processing 100% ━━━━━━━━━━━━━━ 799/799 [ 1:20:05 < 0:00:00 | 0.2  chunk/s ]
+Merging (local)   0%                  1/799 [ 1:20:05 < -:--:-- | ?   merges/s ]
+Warning: Flag_BadPFMuonDzFilter not found in 4BD-500-490__500-490__2018, skipping
+Warning: Flag_BadPFMuonDzFilter not found in 4BD-500-490__500-490__2018, skipping
+Output saved to {output_path}
+Done.
