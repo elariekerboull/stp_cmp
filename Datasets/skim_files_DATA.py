@@ -147,8 +147,8 @@ def compute_selection(events, year, jets):
         )
 
     trigger_patterns = [
-        "HLT PFMET120 PFMHT120 IDTight",
-        "HLT PFMET120 PFMHT120 IDTight PFHT60",
+        "HLT PFMET120 PFMHT120 IDTight_v*",
+        "HLT PFMET120 PFMHT120 IDTight PFHT60_v*",
     ]
     trigger_pass = get_trigger_or(events, trigger_patterns)
     selection = pre_selection & trigger_pass
