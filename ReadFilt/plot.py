@@ -1,4 +1,5 @@
 import coffea.util as util
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -14,6 +15,59 @@ with open("../Datasets/samples.json") as f:
     samples = json.load(f)
 
 lumi = samples["luminosity"][year] * 1000 
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm   # only needed if you want a log colour scale
+
+def plot_2d_histogram(histogram, hist_name, x_label, y_label, log=False):
+
+    h_year = histogram[{"year": year}]
+    all_processes = list(h_year.axes["process"])
+
+    h_total = sum(h_year[{"process": p}] for p in all_processes)
+
+    values = h_total.values(flow=True)[1:-1, 1:-1]
+    values = np.asarray(values)
+    x_edges = h_total.axes["pt_lepton"].edges
+    y_edges = (h_total.axes["RelIso_lepton"].edges
+               if "RelIso_lepton" in h_total.axes.name
+               else h_total.axes["AbsIso_lepton"].edges)
+
+    total = values.sum()
+    if total > 0:
+        values = values / total
+
+    # mask empty bins so they are drawn white
+    values = np.ma.masked_where(values <= 0, values)
+    cmap = plt.get_cmap("viridis").copy()
+    #cmap = plt.get_cmap("cividis").copy() # colourblind 'friendly' colourmap
+    cmap.set_bad("white")
+
+    # colour scale limits: default to this histogram's own range
+    vmin = values.min()
+    vmax = values.max()
+    norm = LogNorm(vmin=vmin, vmax=vmax)
+    kw = {"norm": norm}
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.set_facecolor("white")
+    mesh = ax.pcolormesh(x_edges, y_edges, values.T,
+                         shading="auto", cmap=cmap, **kw)
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.set_title(f"{hist_name} ({year})")
+    fig.colorbar(mesh, ax=ax,
+                 label="Fraction of weighted events / bin")
+
+    save_path = os.path.join(output_dir, f"{hist_name}_{year}.png")
+    plt.tight_layout()
+    plt.savefig(save_path, facecolor="white")
+    plt.close(fig)
+    print(f"Saved {save_path}")
+
 
 def get_values_with_overflow(h):
     values = h.values(flow=True)
@@ -102,15 +156,19 @@ def plot_histogram(histogram, variable_name):
         "WJetsToLNu": "W→Lν",
         "QCD": "QCD",
         "TTbar": "TTbar",
-        "MultiBoson": "MultiBoson",
-        "Single(T+Tbar)": "Single(T+Tbar)",
-        "TT+X": "TT+X",
-        "V→QQ": "V→QQ",
+#        "MultiBoson": "MultiBoson",
+#        "Single(T+Tbar)": "Single(T+Tbar)",
+#        "TT+X": "TT+X",
+#        "V→QQ": "V→QQ",
         "4BD-500-490": "4BD-500-490",
         "4BD-500-420": "4BD-500-420",
     }
     all_processes = list(h_year.axes["process"])
     last_edges = None
+    okabe_ito = ["#0072B2", "#E69F00", "#009E73", "#CC79A7",
+             "#56B4E9", "#D55E00", "#F0E442", "#000000"]
+
+    mpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=okabe_ito)
     fig, ax = plt.subplots()
 
     for process, label in label_mapping.items():
@@ -162,7 +220,7 @@ def plot_histogram(histogram, variable_name):
 # changed "njets" to "njet"
 # removed jet2 variables (excluded from analysis?)
 variables_to_plot = [
-    "met", "njet", "jet1_pt", "HT"#,
+    "met", "njet", "jet1_pt", "HT", "pt_lepton","phi_lepton","eta_lepton","charge_lepton","dxy_lepton","dz_lepton","RelIso_lepton","AbsIso_lepton"
     #"met_Njets2", "njets_Njets2", "jet1_pt_Njets2", "HT_Njets2"
 ]
 
@@ -211,5 +269,7 @@ with open(table_path, "w") as f:
                 f.write(f"  {'B (all backgrounds)':<30} {B:>12.2f} ± {np.sqrt(sigma2_B):>8.2f}\n")
                 f.write(f"  {'FOM':<30} {FOM:.4f} ± {sigma_FOM:.4f}\n")
 
+plot_2d_histogram(output["RelIso_vs_pt"], "RelIso_vs_pt", "pT(l) [GeV]", "RelIso(l)")
+plot_2d_histogram(output["AbsIso_vs_pt"], "AbsIso_vs_pt", "pT(l) [GeV]", "AbsIso(l)")
 print(f"\nYield table saved to {table_path}")
 print("All plots saved.")

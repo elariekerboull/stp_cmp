@@ -15,6 +15,14 @@ BRANCHES_TO_KEEP = {
     "Jet": ["pt", "eta", "qgl", "nConstituents", "mass", "phi"],
     "MET": ["pt", "significance", "phi"],
     "event_level": ["genWeight", "run", "luminosityBlock", "event"],
+    "Muon": ["pt", "eta", "pfRelIso03_all", "phi", "charge", "mediumId", "looseId", "softId", "tightId", "dxy", "dz"],
+    "Electron": ["pt", "eta", "pfRelIso03_all", "phi", "charge", "cutBased", "dxy", "dz"],
+}
+
+EXCLUDE_PROCESSES = {
+    "TTbar",
+    "WJetsToQQ",
+    "ZJetsToQQ"
 }
 
 # --------------------
@@ -42,10 +50,8 @@ def make_good_jets(jets, year):
 
 def compute_selection(events, year, jets):
     muons = events.Muon
-    # print(type(muons))
     electrons = events.Electron
     met = events.MET
-    # print(type(met))
     taus = events.Tau
     isotracks = events.IsoTrack
     CaloMet = events.CaloMET
@@ -73,8 +79,13 @@ def compute_selection(events, year, jets):
     n_IsoTracks = ak.num(refined_isotracks)
     n_jets = ak.num(jets)
     good_jets_pad = ak.pad_none(jets, 5)
+
+    # Jet 1 variable selection
     jet1_pt = ak.fill_none(good_jets_pad[:, 0].pt, np.nan)
     Ht = ak.sum(jets.pt, axis=1)
+    
+    """
+    # Jet related code
     jet1_phi = ak.fill_none(good_jets_pad[:, 0].phi, np.nan)
     jet2_phi = ak.fill_none(good_jets_pad[:, 1].phi, np.nan)
     jet3_phi = ak.fill_none(good_jets_pad[:, 2].phi, np.nan)
@@ -88,10 +99,21 @@ def compute_selection(events, year, jets):
     jet2_missing = np.isnan(dphi_jet2)
     jet3_missing = np.isnan(dphi_jet3)
     jet4_missing = np.isnan(dphi_jet4)
+    """
 
     met_cleaning_calo = (abs((met.pt/CaloMet.pt) - 1))
     met_cleaning_chged = dphi(ChgedMet.phi, met.phi)
 
+    #Isolation condition
+    good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
+    good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
+
+    # Cutbased electrons and medium muonID with isolation condition
+    good_electrons = (electrons.cutBased > 0) & good_iso_electron
+    good_muons = (muons.mediumId) & good_iso_muon
+
+    n_electrons = ak.sum(good_electrons, axis=1)
+    n_muons = ak.sum(good_muons,axis=1)
     
     selection = (
             (np.array(jet1_pt) > 110) &
@@ -99,17 +121,13 @@ def compute_selection(events, year, jets):
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            (((ak.sum(muons.mediumId == 1, axis=1) == 1) & (ak.sum(electrons.cutBased > 0, axis=1) == 0 )) | 
-            ((ak.sum(muons.mediumId == 1, axis=1) == 0) & (ak.sum(electrons.cutBased > 0, axis=1) == 1 ))) &
-            (np.array(Ht) > 200) #&
-            #(abs(dphi_jet1) > 0.5) &
-            #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
-            #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
-            #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
-            #(met_cleaning_calo < 0.5) &
-            #(abs(met_cleaning_chged) < 2.0)
+            ((n_muons + n_electrons) == 1) &            
+            (np.array(Ht) > 200) &
+            (met_cleaning_calo < 0.5) &
+            (abs(met_cleaning_chged) < 2.0)        
         )
     return selection
+
 
 # --------------------
 # Branch extraction helper
@@ -171,21 +189,23 @@ def main():
 
     for process in samples["MC"]:
         for sample in samples["MC"][process]:
+            print("Process ",process)
 #            if process == "DYJetsToLL_M-50" or process == "GJets_DR-0p4" or (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
-#            if (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
-            for year, info in samples["MC"][process][sample].items():
-                if year != "2018":   # restrict for this small test
-                    continue
+            #if (process == "WJetsToLNu" and sample == "WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8"):
+            if process not in EXCLUDE_PROCESSES:
+                for year, info in samples["MC"][process][sample].items():
+                    if year != "2018":   # restrict for this small test
+                        continue
 
-                for input_path in info["files"]:
-                    # build a matching output filename, keeping same basename
-                    basename = os.path.basename(input_path)
-                    sample_dir = os.path.join(OUTPUT_DIR, sample)
-                    os.makedirs(sample_dir, exist_ok=True)
+                    for input_path in info["files"]:
+                        # build a matching output filename, keeping same basename
+                        basename = os.path.basename(input_path)
+                        sample_dir = os.path.join(OUTPUT_DIR, sample)
+                        os.makedirs(sample_dir, exist_ok=True)
 
-                    output_path = os.path.join(sample_dir, basename)
-                    file_list.append((input_path, output_path, year))
-                    print(output_path)
+                        output_path = os.path.join(sample_dir, basename)
+                        file_list.append((input_path, output_path, year))
+                        print(output_path)
 
     for input_path, output_path, year in file_list:
         if year == "2018":

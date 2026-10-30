@@ -1,4 +1,8 @@
+# Add any pattern that you want to exclude - can also exclude specifc folders
 *.png
 *.coffea
 *old_plots*
 *__pycache__*
+*.json
+*.out
+*.err
