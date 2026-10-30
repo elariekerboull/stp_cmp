@@ -1,0 +1,21 @@
+# Submit one job per fileset chunk produced by split_fileset.py.
+# Run `python split_fileset.py --njobs 6` first so chunks/chunk_0.json.. exist.
+
+universe        = vanilla
+executable      = run_chunk.sh
+arguments       = $(chunk) 6
+
+request_cpus    = 6
+request_memory  = 8GB
+request_disk    = 4GB
+
+# /users and /STORE are shared (NFS/glusterfs) across all execute hosts,
+# so nothing needs to be transferred in or out.
+should_transfer_files = NO
+getenv          = True
+
+output          = logs/$Fn(chunk).out
+error           = logs/$Fn(chunk).err
+log             = logs/condor.log
+
+queue chunk matching files chunks/chunk_*.json

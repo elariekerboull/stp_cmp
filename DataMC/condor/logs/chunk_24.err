@@ -1,0 +1,72 @@
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1162: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1162: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1162: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1162: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1171: UserWarning: Skipping bad file after 4 attempts. The last exception was: [Errno 2] No such file or directory: '/STORE/stopSamples/Samples/2018/MC/ST_t-channel_top_4f_InclusiveDecays/FD89F9E0-E7E9-A44E-A7EC-91207035BCDE.root'
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:322: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_genPartIdx => GenPart
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_genPartIdx => GenPart
+  warnings.warn(
+/users/scormenier/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:283: RuntimeWarning: Missing cross-reference index for LowPtElectron_genPartIdx => GenPart
+  warnings.warn(
+Traceback (most recent call last):
+  File "/users/scormenier/stp/MC_Data/condor/run_chunk.py", line 82, in <module>
+    main()
+  File "/users/scormenier/stp/MC_Data/condor/run_chunk.py", line 78, in main
+    kill_child_processes()
+  File "/users/scormenier/stp/MC_Data/condor/run_chunk.py", line 27, in kill_child_processes
+    parent = psutil.Process(os.getpid())
+NameError: name 'psutil' is not defined. Did you mean: 'util'?

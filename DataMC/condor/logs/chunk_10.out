@@ -1,0 +1,6 @@
+  Preprocessing 100% ━━━━━━━━━━━━━━ 138/138 [ 0:00:59 < 0:00:00 | 2.6   file/s ]
+Merging (local)   1%                  1/138 [ 0:00:59 < -:--:-- | ?   merges/s ]
+     Processing 100% ━━━━━━━━━━━━━━ 789/789 [ 1:10:23 < 0:00:00 | 0.2  chunk/s ]
+Merging (local)   0%                  1/789 [ 1:10:23 < -:--:-- | ?   merges/s ]
+Output saved to {output_path}
+Done.
