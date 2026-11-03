@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import os
 
-output = util.load("output_MC_Data.coffea")
+output = util.load("output_MC_Data-merged.coffea")
 print(output.keys())
 
 # -------------------------------------------------------
@@ -192,8 +192,13 @@ plot_config = {
     "njet":      ("njet",      "njet",                  "njet"),
     "nPV":      ("nPV",      "number of primary vertices",                  "nPV"),
     "met_phi": ("met_jet1", "MET #phi",           "met_phi"),
-    "nTInt":      ("nTInt",      "nTrueInt",                  "nTrueInt"),
-    "PU_weights":      ("PU_weights",      "PU_weights",                  "PU_weights"),
+    "pt_lepton": ("pt lepton", "pT(l) [GeV]",           "pt_lepton"),
+    "eta_lepton": ("eta_lepton", "Lepton #eta",           "eta_lepton"),
+    "charge_lepton": ("charge_lepton", "Lepton Charge",           "charge_lepton"),
+    "mt": ("mt", "Invariant mass Mt",           "mt"),
+    "ht": ("ht", "Ht",           "ht"),
+    #"nTInt":      ("nTInt",      "nTrueInt",                  "nTrueInt"),
+    #"PU_weights":      ("PU_weights",      "PU_weights",                  "PU_weights"),
     
 }
 

@@ -73,7 +73,8 @@ def plot_histogram_2d(histogram, variable_name, processes_to_sum, mode,
 
 
 variables_to_plot = [
-    "2D_jet1_eta_phi_postHEM_110_200", "2D_jet1_eta_phi_postHEM_200_300", "2D_jet1_eta_phi_postHEM_300_400", "2D_jet1_eta_phi_postHEM_400_500", 
+    # "2D_jet1_eta_phi_postHEM_110_200", "2D_jet1_eta_phi_postHEM_200_300", "2D_jet1_eta_phi_postHEM_300_400", "2D_jet1_eta_phi_postHEM_400_500", 
+    "2D_jet1_eta_phi_postHEM", 
 ]
 
 signals = ["4BD-500-490", "4BD-500-420"]

@@ -20,7 +20,7 @@ from coffea import processor
 from analysis_MC_Data import StopAnalysisMC_Data
 import coffea.util as util
 
-SAMPLES_PATH = "/users/scormenier/stp/Datasets/samples.json"
+SAMPLES_PATH = "/users/elarieke/stop_analysis/stp_cmp/Datasets/samples.json"
 
 def kill_child_processes():
     """Kill any leftover child processes spawned by this script."""
