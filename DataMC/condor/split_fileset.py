@@ -13,7 +13,7 @@ import argparse
 import json
 import os
 
-SAMPLES_PATH = "/users/scormenier/stp/Datasets/samples.json"
+SAMPLES_PATH = "/users/elarieke/stop_analysis/stp_cmp/Datasets/samples.json"
 CHOSEN_YEAR = "2018"
 HERE = os.path.dirname(os.path.abspath(__file__))
 
