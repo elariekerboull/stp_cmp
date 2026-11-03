@@ -253,8 +253,8 @@ class StopAnalysisProcessorSMSLess(processor.ProcessorABC):
             #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
             #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
         )
-        selection_electron = (n_electrons == 1) & (n_muons == 0)
-        selection_muon = (n_muons == 1) & (n_electrons == 0)
+        #selection_electron = (n_electrons == 1) & (n_muons == 0)
+        #selection_muon = (n_muons == 1) & (n_electrons == 0)
 
         def convert_lepton(newlep):
             return ak.zip(

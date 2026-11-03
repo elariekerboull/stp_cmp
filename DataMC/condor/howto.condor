@@ -1,0 +1,25 @@
+What's set up
+
+Your pool has 6 real hosts (lorienmaster, lorientree01–05, 6–8 cores each), all sharing /users and /STORE over NFS/glusterfs — so condor jobs can just read your scripts and the ROOT files directly, no file transfer needed. I added a condor/ subdirectory next to run_MC_Data.py:
+
+split_fileset.py — rebuilds the same 2018 MC+Data fileset run_MC_Data.py builds, then round-robins individual files (not whole datasets) across N chunks so no one job gets stuck with your biggest sample.
+
+run_chunk.py — same StopAnalysisMC_Data processor, but takes a chunk JSON as input and writes its own partial .coffea to out/.
+
+run_chunk.sh — thin wrapper invoking the coffea conda env's python directly (no activation needed since env vars/libs resolve from the binary's own prefix).
+
+submit.sub — one job per chunk file, 6 CPUs/8GB each, should_transfer_files = NO since the filesystem is shared.
+
+merge_outputs.py — sums all the partial histograms back into one file with coffea.processor.accumulate, written to the same place/name your interactive run produces.
+
+I ran a real 2-file smoke test through the whole chain (split → run_chunk → merge) to confirm the histograms merge correctly (verified accumulate sums per-process/year categories properly) — it worked, and I cleaned up the test artifacts afterward.
+
+To run for real
+
+cd /users/vuko/phan/stop/sc_code/stp_cmp/DataMC/condor
+/users/vuko/miniconda3/envs/coffea/bin/python split_fileset.py --njobs 6
+condor_submit submit.sub
+condor_q vuko          # watch progress
+# once all 6 are done:
+/users/vuko/miniconda3/envs/coffea/bin/python merge_outputs.py
+
