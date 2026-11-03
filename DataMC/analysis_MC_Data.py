@@ -65,13 +65,6 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
-            "mt_nocut": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 0, 600, name="mt_nocut", label="MT [GeV]", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
-
             "njet": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
