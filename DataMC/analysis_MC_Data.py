@@ -287,6 +287,21 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "pt_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 250, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "pt_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 250, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+
             "phi_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
@@ -1116,6 +1131,18 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             year=year,
             jet4_phi=jet4_phi[sel_jet4],
             weight=weights[sel_jet4]
+        self._accumulator["pt_muon"].fill(
+            process=process,
+            year=year,
+            pt_muon = muons[selection_base & good_muons].pt,
+            weight=weights[selection_base & good_muons]
+        )
+
+        self._accumulator["pt_electron"].fill(
+            process=process,
+            year=year,
+            pt_electron = electrons[selection_base & good_electrons].pt,
+            weight=weights[selection_base & good_electrons]
         )
 
         self._accumulator["phi_lepton"].fill(
