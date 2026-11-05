@@ -283,21 +283,21 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "pt_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 0, 250, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 3, 253, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
             "pt_muon": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 0, 250, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 3, 253, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
             "pt_electron": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 0, 250, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 3, 253, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -750,9 +750,13 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
         good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
 
+        # Conditions on pt of muons and electrons
+        good_pt_muon = (muons.pt > 3.5)
+        good_pt_electron = (electrons.pt > 5)
+
         # Cutbased electrons and medium muonID with isolation condition
-        good_electrons = (electrons.cutBased > 0) & good_iso_electron
-        good_muons = (muons.mediumId) & good_iso_muon
+        good_electrons = (electrons.cutBased > 0) & good_iso_electron & good_pt_electron
+        good_muons = (muons.mediumId) & good_iso_muon & good_pt_muon
 
         n_electrons = ak.sum(good_electrons, axis=1)
         n_muons = ak.sum(good_muons,axis=1)
@@ -1131,18 +1135,23 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             year=year,
             jet4_phi=jet4_phi[sel_jet4],
             weight=weights[sel_jet4]
+        muon_mask = selection_base & good_muons
+        muon_weights = ak.broadcast_arrays(weights, muons.pt)[0]
         self._accumulator["pt_muon"].fill(
             process=process,
             year=year,
-            pt_muon = muons[selection_base & good_muons].pt,
-            weight=weights[selection_base & good_muons]
+            pt_muon=ak.flatten(muons.pt[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask]),
         )
 
+        electron_mask = selection_base & good_electrons
+        electron_weights = ak.broadcast_arrays(weights, electrons.pt)[0]
+        
         self._accumulator["pt_electron"].fill(
             process=process,
             year=year,
-            pt_electron = electrons[selection_base & good_electrons].pt,
-            weight=weights[selection_base & good_electrons]
+            pt_electron = ak.flatten(electrons.pt[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask]),
         )
 
         self._accumulator["phi_lepton"].fill(

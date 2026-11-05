@@ -12,15 +12,15 @@ print(output.keys())
 # Configuration: colors and ordering for MC stack
 # -------------------------------------------------------
 mc_colors = {
-    "ZJetsToNuNu":   "#e31a1c",  # red   - dominant BG, goes on top
+    "ZJetsToNuNu":   "#e31a1c",  # red   - dominant BG, goes on top - dominant only in hadronic case
     "WJetsToLNu":    "#00bfff",  # cyan
     "TTbar":         "#1f78b4",  # blue
-    #"QCD":           "#ffff33",  # yellow
+    "QCD":           "#ffff33",  # yellow
     "SingleTop":     "#6a3d9a",  # purple
     "SingleAntiTop": "#cab2d6",  # light purple
     "MultiBoson":    "#b15928",  # brown
     "TT+X":          "#fb9a99",  # pink
-    "WJetsToQQ":     "#33a02c",  # green
+    "WJetsToQQ":     "#64d85c",  # green
     "ZJetsToQQ":     "#ff7f00",  # orange
 }
 
@@ -193,6 +193,8 @@ plot_config = {
     "nPV":      ("nPV",      "number of primary vertices",                  "nPV"),
     "met_phi": ("met_jet1", "MET #phi",           "met_phi"),
     "pt_lepton": ("pt lepton", "pT(l) [GeV]",           "pt_lepton"),
+    "pt_muon": ("pt muon", "pT(mu) [GeV]",           "pt_muon"),
+    "pt_electron": ("pt electron", "pT(e) [GeV]",           "pt_electron"),
     "eta_lepton": ("eta_lepton", "Lepton #eta",           "eta_lepton"),
     "charge_lepton": ("charge_lepton", "Lepton Charge",           "charge_lepton"),
     "mt": ("mt", "Invariant mass Mt",           "mt"),
