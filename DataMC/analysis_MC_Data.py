@@ -280,6 +280,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 hist.axis.StrCategory([], growth=True, name="year"),
                 hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
                 hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
             "pt_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
@@ -745,7 +748,6 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         else:
             hot_regions_veto = np.zeros(len(events), dtype=bool)
 
-        """ # commented to try out selection base helper class
         #Isolation condition
         good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
         good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
