@@ -1,0 +1,161 @@
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_electronIdx => Electron
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:297: RuntimeWarning: Missing cross-reference index for LowPtElectron_photonIdx => Photon
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_mass already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/nanoevents/schemas/nanoaod.py:336: RuntimeWarning: Branch Photon_charge already exists but its values will be replaced with 0.0
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 1 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 2 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 3 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+loky.process_executor._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 1680, in _work_function
+    out = processor_instance.process(events)
+  File "/users/elarieke/stop_analysis/stp_cmp/DataMC/analysis_MC_Data.py", line 649, in process
+    met_leptons_pt = met[(good_muons | good_electrons) & (n_muons + n_electrons ==1)].pt
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_operators.py", line 52, in func
+    return ufunc(self, other)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/highlevel.py", line 1644, in __array_ufunc__
+    with ak._errors.OperationErrorContext(name, inputs, kwargs):
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_errors.py", line 79, in __exit__
+    raise self.decorate_exception(exception_type, exception_value)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/highlevel.py", line 1645, in __array_ufunc__
+    return ak._connect.numpy.array_ufunc(ufunc, method, inputs, kwargs)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_connect/numpy.py", line 484, in array_ufunc
+    out = ak._broadcasting.broadcast_and_apply(
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 1223, in broadcast_and_apply
+    out = apply_step(
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 1201, in apply_step
+    return continuation()
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 1170, in continuation
+    return broadcast_any_list()
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 663, in broadcast_any_list
+    outcontent = apply_step(
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 1201, in apply_step
+    return continuation()
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 1170, in continuation
+    return broadcast_any_list()
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 714, in broadcast_any_list
+    next_content = broadcast_to_offsets_avoiding_carry(x, offsets)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/_broadcasting.py", line 373, in broadcast_to_offsets_avoiding_carry
+    return list_content._broadcast_tooffsets64(offsets).content
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/awkward/contents/listoffsetarray.py", line 439, in _broadcast_tooffsets64
+    raise ValueError("cannot broadcast nested list")
+ValueError: cannot broadcast nested list
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/loky/process_executor.py", line 490, in _process_worker
+    r = call_item()
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/loky/process_executor.py", line 291, in __call__
+    return self.fn(*self.args, **self.kwargs)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 317, in __call__
+    out = self.function(*args, **kwargs)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 1296, in automatic_retries
+    raise e
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 1276, in automatic_retries
+    return func(*args, **kwargs)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 1684, in _work_function
+    raise Exception(
+Exception: Failed processing file: WorkItem(dataset='TTbar__TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8__2018', filename='/STORE/stopSamples/Samples/2018/MC/TTJets/07EDFAD1-E54C-344E-9200-ABBC3D5EF6BB.root', treename='Events', entrystart=97461, entrystop=194922, fileuuid=b'\xaa\xc4\x01\xae\xa4D\x11\xec\x97\xc3f$\x11\xac\xbe\xef', usermeta={}, preload=None). The error was: ValueError('cannot broadcast nested list').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 717, in _processwith
+    merged = _watcher(FH, self, reducer, pool)
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 498, in _watcher
+    batch = FH.fetch(len(FH.completed))
+  File "/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py", line 382, in fetch
+    raise bad_futures[0].exception()
+Exception: Failed processing file: WorkItem(dataset='TTbar__TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8__2018', filename='/STORE/stopSamples/Samples/2018/MC/TTJets/07EDFAD1-E54C-344E-9200-ABBC3D5EF6BB.root', treename='Events', entrystart=97461, entrystop=194922, fileuuid=b'\xaa\xc4\x01\xae\xa4D\x11\xec\x97\xc3f$\x11\xac\xbe\xef', usermeta={}, preload=None). The error was: ValueError('cannot broadcast nested list').
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(
+/users/elarieke/miniconda3/envs/coffea/lib/python3.10/site-packages/coffea/processor/executor.py:1278: UserWarning: Performed attempt 4 out of 4
+  warnings.warn(

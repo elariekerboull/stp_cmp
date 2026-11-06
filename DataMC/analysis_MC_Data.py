@@ -11,6 +11,7 @@ import fnmatch
 from coffea.lumi_tools import LumiMask
 
 
+
 class StopAnalysisMC_Data(processor.ProcessorABC):
 
     def __init__(self, samples, hem_veto_run_min=319077, mc_drop_fraction=0.6478, 
