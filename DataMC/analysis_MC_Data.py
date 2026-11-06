@@ -677,7 +677,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         ]
 
         get_veto_mask = get_veto_map_mask(veto_jets, vetomap_corr, map_name="jetvetomap")
-        # events = events[~get_veto_mask] """ Commented until figured out why this jet veto """
+        events = events[~get_veto_mask] # Unommented but still not figured out why this jet veto 
 
 
         # Flag events belonging to the HEM-affected period (data: runs >= 319077,
@@ -694,26 +694,26 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
             # Object-level HEM veto (unchanged logic)
             veto = hem_event_veto_mask(events)
-            # events = events[~(events.in_hem_period & veto)] """ Commented until figured out """
+            events = events[~(events.in_hem_period & veto)]
 
-        # # Apply HEM veto for 2018 data and MC
-        # if year == "2018":
-        #     if is_data:
-        #         # Only apply the HEM veto to runs in RunB(>=319077)/C/D
-        #         run_in_hem_window = events.run >= self.hem_veto_run_min
-        #         veto = hem_event_veto_mask(events)
-        #         drop_mask = run_in_hem_window & veto
-        #         events = events[~drop_mask]
-        #     else:
-        #         # MC: randomly drop the equivalent fraction, reproducibly per-dataset
-        #         if self.mc_drop_fraction > 0:
-        #             draw = get_deterministic_uniform(
-        #                 dataset, events.run, events.luminosityBlock, events.event
-        #             )
-        #             in_hem_period = draw < self.mc_drop_fraction
-        #             veto = hem_event_veto_mask(events)
-        #             drop_mask = in_hem_period & veto
-        #             events = events[~drop_mask]
+        # Apply HEM veto for 2018 data and MC
+        if year == "2018":
+            if is_data:
+                # Only apply the HEM veto to runs in RunB(>=319077)/C/D
+                run_in_hem_window = events.run >= self.hem_veto_run_min
+                veto = hem_event_veto_mask(events)
+                drop_mask = run_in_hem_window & veto
+                events = events[~drop_mask]
+            else:
+                # MC: randomly drop the equivalent fraction, reproducibly per-dataset
+                if self.mc_drop_fraction > 0:
+                    draw = get_deterministic_uniform(
+                        dataset, events.run, events.luminosityBlock, events.event
+                    )
+                    in_hem_period = draw < self.mc_drop_fraction
+                    veto = hem_event_veto_mask(events)
+                    drop_mask = in_hem_period & veto
+                    events = events[~drop_mask]
         
         #Apply met filter flags
         met_filter_flags = [
@@ -892,7 +892,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & # temp commented
-            (jet2_missing | (abs(dphi_jet1_jet2) < 2.5))
+            (jet2_missing | ((abs(dphi_jet1_jet2) < 2.5) & jet1_pt > 60))
 
             # Only for non-leptonic case
             #(abs(dphi_jet1) > 0.5) &
@@ -1052,18 +1052,15 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         )
 
         #sel_slice1 = selection_base & (np.array(jet1_pt) > 500) & np.array(has_jet1)
+
+        # 2D plots
+
         self._accumulator["2D_jet1_eta_phi_postHEM"].fill(
             process=process,
             year=year,
             jet1_eta=jet1_eta[selection_base],
             jet1_phi=jet1_phi[selection_base],
             weight=weights[selection_base],
-        )
-        self._accumulator["pt_lepton"].fill(
-            process=process,
-            year=year,
-            pt_lepton = lepton.pt,
-            weight=weights[sel_lepton]
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone1"].fill(
@@ -1245,6 +1242,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_jet4]
         )
         """
+
+        # Muon accumulators
+
         muon_mask = selection_base & n_good_muons
         muon_weights = ak.broadcast_arrays(weights, good_muons.pt)[0]
         self._accumulator["pt_muon"].fill(
@@ -1295,6 +1295,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             dz_muon=ak.flatten(good_muons.dz[muon_mask]),
             weight=ak.flatten(muon_weights[muon_mask])
         )
+
+
+        # Electron accumulators
 
         electron_mask = selection_base & n_good_electrons
         electron_weights = ak.broadcast_arrays(weights, good_electrons.pt)[0]
@@ -1348,6 +1351,14 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=ak.flatten(electron_weights[electron_mask])
         )
 
+        # Lepton accumulators
+
+        self._accumulator["pt_lepton"].fill(
+            process=process,
+            year=year,
+            pt_lepton = lepton.pt,
+            weight=weights[sel_lepton]
+        )
 
         self._accumulator["phi_lepton"].fill(
             process=process,
