@@ -888,7 +888,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             (np.array(n_IsoTracks) == 0) &  # temp commented
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
+ #           (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & # temp commented
