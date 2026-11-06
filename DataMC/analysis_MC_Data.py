@@ -8,6 +8,8 @@ import hashlib
 import gzip
 import correctionlib
 import fnmatch
+from coffea.lumi_tools import LumiMask
+
 
 
 class StopAnalysisMC_Data(processor.ProcessorABC):
@@ -19,6 +21,13 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         self.mc_drop_fraction = mc_drop_fraction
         self.hem_met_phi_lo = hem_met_phi_lo
         self.hem_met_phi_hi = hem_met_phi_hi
+
+        # Load LumiMask objects at init time, on the main node
+        golden_json = {
+            "2017": "/users/scormenier/stp/Datasets/LumiJson/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt",
+            "2018": "/users/scormenier/stp/Datasets/LumiJson/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt",
+        }
+        self.lumi_masks = {yr: LumiMask(path) for yr, path in golden_json.items()}
 
         # Histograms you want
         self._accumulator = {
@@ -41,6 +50,69 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
                 hist.axis.Regular(60, -np.pi, np.pi, name="jet1_phi", label="phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet2_pt": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 100, 1000, name="jet2_pt", label="MET [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet2_eta": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(49, 0, 2.4, name="jet2_eta", label="eta", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet2_phi": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -np.pi, np.pi, name="jet2_phi", label="phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet3_pt": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 100, 1000, name="jet3_pt", label="MET [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet3_eta": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(49, 0, 2.4, name="jet3_eta", label="eta", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet3_phi": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -np.pi, np.pi, name="jet3_phi", label="phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet4_pt": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 100, 1000, name="jet4_pt", label="MET [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet4_eta": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(49, 0, 2.4, name="jet4_eta", label="eta", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "jet4_phi": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -np.pi, np.pi, name="jet4_phi", label="phi", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -108,12 +180,131 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "2D_jet1_eta_phi_postHEM_zone1": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 1.5, 3.0, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(44, 2.70, 3.14, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_zone2": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -3, -1.5, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(40, -0.5, 0.5, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_zone3": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 1.5, 3.0, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(40, -0.5, 0.5, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_zone4": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -3, -1.5, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(44, -3.14, -2.70, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_zone5": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, 1.5, 3.0, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(44, -3.14, -2.7, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet2_eta_phi_postHEM": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_110_200": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_200_300": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_300_400": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_400_500": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_500_700": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_700_900": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet1_eta_phi_postHEM_900_Inf": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet1_eta", label="jet1 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet1_phi", label="jet1 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
             "pt_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 0, 250, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 3, 253, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
+
+            "pt_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 3, 253, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "pt_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 3, 253, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
 
             "phi_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
@@ -370,14 +561,19 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "PFMET120_PFMHT120_IDTight_PFHT60",
         ]
 
+        # Apply lumi mask to data only
+        if is_data:
+            lumi_mask = self.lumi_masks[year](events.run, events.luminosityBlock)
+            events = events[lumi_mask]
+
         # Why this veto jet?
         veto_jets = events.Jet[
             (events.Jet.pt > 30) & (abs(events.Jet.eta) < 2.4) & (events.Jet.jetId >= 2)
         ]
 
-        #Apply jet veto mask using the vetomap correction
         get_veto_mask = get_veto_map_mask(veto_jets, vetomap_corr, map_name="jetvetomap")
         # events = events[~get_veto_mask] """ Commented until figured out why this jet veto """
+
 
         # Flag events belonging to the HEM-affected period (data: runs >= 319077,
         # MC: deterministic random fraction matching the affected lumi fraction)
@@ -536,13 +732,34 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         met_cleaning_calo = (abs((met.pt/CaloMet.pt) - 1))
         met_cleaning_chged = dphi(ChgedMet.phi, met.phi)
 
+        # Hot regions observed in 2D maps of jet1
+        if year == "2018":
+            zone1  = (jet1_eta > 1.9)    & (jet1_eta < 2.325)  & (jet1_phi > 2.96)   & (jet1_phi < np.pi)
+            zone2  = (jet1_eta > -2.4)   & (jet1_eta < -1.8)   & (jet1_phi > 0.0)    & (jet1_phi < 0.14)
+            zone3A = (jet1_eta > 2.1)    & (jet1_eta < 2.35)   & (jet1_phi > 0.06)   & (jet1_phi < 0.13)
+            zone3B = (jet1_eta > 1.55)   & (jet1_eta < 1.9)    & (jet1_phi > -0.04)  & (jet1_phi < 0.08)
+            zone4  = (jet1_eta > -2.15)  & (jet1_eta < -1.825) & (jet1_phi > -3.1)   & (jet1_phi < -2.96)
+            zone5A = (jet1_eta > 1.85)   & (jet1_eta < 2.15)   & (jet1_phi > -3.1)   & (jet1_phi < -2.98)
+            zone5B = (jet1_eta > 1.6)    & (jet1_eta < 1.7)    & (jet1_phi > -3.13)  & (jet1_phi < -3.05)
+
+            hot_regions_window = (
+                zone1 | ((zone2 | zone3A | zone3B | zone4 | zone5A | zone5B) & (jet1_pt < 500))
+            )
+            hot_regions_veto = ak.to_numpy(events.in_hem_period & hot_regions_window)
+        else:
+            hot_regions_veto = np.zeros(len(events), dtype=bool)
+
         #Isolation condition
         good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
         good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
 
+        # Conditions on pt of muons and electrons
+        good_pt_muon = (muons.pt > 3.5)
+        good_pt_electron = (electrons.pt > 5)
+
         # Cutbased electrons and medium muonID with isolation condition
-        good_electrons = (electrons.cutBased > 0) & good_iso_electron
-        good_muons = (muons.mediumId) & good_iso_muon
+        good_electrons = (electrons.cutBased > 0) & good_iso_electron & good_pt_electron
+        good_muons = (muons.mediumId) & good_iso_muon & good_pt_muon
 
         n_electrons = ak.sum(good_electrons, axis=1)
         n_muons = ak.sum(good_muons,axis=1)
@@ -563,6 +780,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             #(jet3_missing | (abs(dphi_jet3) > 0.25)) &
             #(jet4_missing | (abs(dphi_jet4) > 0.25)) &
         )
+        selection_base = selection_base & ~hem_met_phi_veto #& ~hot_regions_veto
         #selection_electron = (n_electrons == 1) & (n_muons == 0)
         #selection_muon = (n_muons == 1) & (n_electrons == 0)
 
@@ -729,6 +947,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[selection_base]
         )
 
+        #sel_slice1 = selection_base & (np.array(jet1_pt) > 500) & np.array(has_jet1)
         self._accumulator["2D_jet1_eta_phi_postHEM"].fill(
             process=process,
             year=year,
@@ -741,6 +960,201 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             year=year,
             pt_lepton = lepton.pt,
             weight=weights[selection_base]
+        )
+
+        self._accumulator["2D_jet1_eta_phi_postHEM_zone1"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[selection_base],
+            jet1_phi=jet1_phi[selection_base],
+            weight=weights[selection_base],
+        )
+
+        self._accumulator["2D_jet1_eta_phi_postHEM_zone2"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[selection_base],
+            jet1_phi=jet1_phi[selection_base],
+            weight=weights[selection_base],
+        )
+
+        self._accumulator["2D_jet1_eta_phi_postHEM_zone3"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[selection_base],
+            jet1_phi=jet1_phi[selection_base],
+            weight=weights[selection_base],
+        )
+
+        self._accumulator["2D_jet1_eta_phi_postHEM_zone4"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[selection_base],
+            jet1_phi=jet1_phi[selection_base],
+            weight=weights[selection_base],
+        )
+
+        self._accumulator["2D_jet1_eta_phi_postHEM_zone5"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[selection_base],
+            jet1_phi=jet1_phi[selection_base],
+            weight=weights[selection_base],
+        )
+
+        sel_slice_110_200 = selection_base & (np.array(jet1_pt) > 110) & (np.array(jet1_pt) < 200)
+        self._accumulator["2D_jet1_eta_phi_postHEM_110_200"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_110_200],
+            jet1_phi=jet1_phi[sel_slice_110_200],
+            weight=weights[sel_slice_110_200],
+        )
+
+        sel_slice_200_300 = selection_base & (np.array(jet1_pt) > 200) & (np.array(jet1_pt) < 300)
+        self._accumulator["2D_jet1_eta_phi_postHEM_200_300"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_200_300],
+            jet1_phi=jet1_phi[sel_slice_200_300],
+            weight=weights[sel_slice_200_300],
+        )
+
+        sel_slice_300_400 = selection_base & (np.array(jet1_pt) > 300) & (np.array(jet1_pt) < 400)
+        self._accumulator["2D_jet1_eta_phi_postHEM_300_400"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_300_400],
+            jet1_phi=jet1_phi[sel_slice_300_400],
+            weight=weights[sel_slice_300_400],
+        )
+
+        sel_slice_400_500 = selection_base & (np.array(jet1_pt) > 400) & (np.array(jet1_pt) < 500)
+        self._accumulator["2D_jet1_eta_phi_postHEM_400_500"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_400_500],
+            jet1_phi=jet1_phi[sel_slice_400_500],
+            weight=weights[sel_slice_400_500],
+        )
+
+        sel_slice_500_700 = selection_base & (np.array(jet1_pt) > 500) & (np.array(jet1_pt) < 700)
+        self._accumulator["2D_jet1_eta_phi_postHEM_500_700"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_500_700],
+            jet1_phi=jet1_phi[sel_slice_500_700],
+            weight=weights[sel_slice_500_700],
+        )
+
+        sel_slice_700_900 = selection_base & (np.array(jet1_pt) > 700) & (np.array(jet1_pt) < 900)
+        self._accumulator["2D_jet1_eta_phi_postHEM_700_900"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_700_900],
+            jet1_phi=jet1_phi[sel_slice_700_900],
+            weight=weights[sel_slice_700_900],
+        )
+
+        sel_slice_900_Inf = selection_base & (np.array(jet1_pt) > 900)
+        self._accumulator["2D_jet1_eta_phi_postHEM_900_Inf"].fill(
+            process=process,
+            year=year,
+            jet1_eta=jet1_eta[sel_slice_900_Inf],
+            jet1_phi=jet1_phi[sel_slice_900_Inf],
+            weight=weights[sel_slice_900_Inf],
+        )
+
+        sel_slice_jet2 = selection_base &  np.array(has_jet2)
+        self._accumulator["2D_jet2_eta_phi_postHEM"].fill(
+            process=process,
+            year=year,
+            jet2_eta=jet2_eta[sel_slice_jet2],
+            jet2_phi=jet2_phi[sel_slice_jet2],
+            weight=weights[sel_slice_jet2],
+        )
+
+        sel_jet2 = selection_base & np.array(has_jet2)
+        self._accumulator["jet2_pt"].fill(
+            process=process,
+            year=year,
+            jet2_pt=jet2_pt[sel_jet2],
+            weight=weights[sel_jet2]
+        )
+
+        self._accumulator["jet2_eta"].fill(
+            process=process,
+            year=year,
+            jet2_eta=abs(jet2_eta[sel_jet2]),
+            weight=weights[sel_jet2]
+        )
+
+        self._accumulator["jet2_phi"].fill(
+            process=process,
+            year=year,
+            jet2_phi=jet2_phi[sel_jet2],
+            weight=weights[sel_jet2]
+        )
+
+        sel_jet3 = selection_base & np.array(has_jet3)
+        self._accumulator["jet3_pt"].fill(
+            process=process,
+            year=year,
+            jet3_pt=jet3_pt[sel_jet3],
+            weight=weights[sel_jet3]
+        )
+
+        self._accumulator["jet3_eta"].fill(
+            process=process,
+            year=year,
+            jet3_eta=abs(jet3_eta[sel_jet3]),
+            weight=weights[sel_jet3]
+        )
+
+        self._accumulator["jet3_phi"].fill(
+            process=process,
+            year=year,
+            jet3_phi=jet3_phi[sel_jet3],
+            weight=weights[sel_jet3]
+        )
+
+        sel_jet4 = selection_base & np.array(has_jet4)
+        self._accumulator["jet4_pt"].fill(
+            process=process,
+            year=year,
+            jet4_pt=jet4_pt[sel_jet4],
+            weight=weights[sel_jet4]
+        )
+
+        self._accumulator["jet4_eta"].fill(
+            process=process,
+            year=year,
+            jet4_eta=abs(jet4_eta[sel_jet4]),
+            weight=weights[sel_jet4]
+        )
+
+        self._accumulator["jet4_phi"].fill(
+            process=process,
+            year=year,
+            jet4_phi=jet4_phi[sel_jet4],
+            weight=weights[sel_jet4]
+        muon_mask = selection_base & good_muons
+        muon_weights = ak.broadcast_arrays(weights, muons.pt)[0]
+        self._accumulator["pt_muon"].fill(
+            process=process,
+            year=year,
+            pt_muon=ak.flatten(muons.pt[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask]),
+        )
+
+        electron_mask = selection_base & good_electrons
+        electron_weights = ak.broadcast_arrays(weights, electrons.pt)[0]
+        
+        self._accumulator["pt_electron"].fill(
+            process=process,
+            year=year,
+            pt_electron = ak.flatten(electrons.pt[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask]),
         )
 
         self._accumulator["phi_lepton"].fill(
