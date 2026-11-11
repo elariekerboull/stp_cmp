@@ -882,13 +882,13 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         n_good_electrons = (n_electrons ==1) & (n_muons == 0)
         n_good_leptons = ((n_muons + n_electrons) == 1)
 
-
+        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) &  # temp commented
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
- #           (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) & # A new tau filter should be implemented
+            (ak.sum(tau_filter, axis=1) == 0) & # A new tau filter should be implemented
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
@@ -1056,55 +1056,57 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
         # 2D accumulators
 
+        sel_jet1 = selection_base & n_good_leptons
+
         self._accumulator["2D_jet1_eta_phi_postHEM"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone1"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone2"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone3"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone4"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone5"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
-        sel_slice_110_200 = selection_base & (np.array(jet1_pt) > 110) & (np.array(jet1_pt) < 200)
+        sel_slice_110_200 = sel_jet1 & (np.array(jet1_pt) > 110) & (np.array(jet1_pt) < 200)
         self._accumulator["2D_jet1_eta_phi_postHEM_110_200"].fill(
             process=process,
             year=year,
@@ -1113,7 +1115,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_110_200],
         )
 
-        sel_slice_200_300 = selection_base & (np.array(jet1_pt) > 200) & (np.array(jet1_pt) < 300)
+        sel_slice_200_300 = sel_jet1 & (np.array(jet1_pt) > 200) & (np.array(jet1_pt) < 300)
         self._accumulator["2D_jet1_eta_phi_postHEM_200_300"].fill(
             process=process,
             year=year,
@@ -1122,7 +1124,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_200_300],
         )
 
-        sel_slice_300_400 = selection_base & (np.array(jet1_pt) > 300) & (np.array(jet1_pt) < 400)
+        sel_slice_300_400 = sel_jet1 & (np.array(jet1_pt) > 300) & (np.array(jet1_pt) < 400)
         self._accumulator["2D_jet1_eta_phi_postHEM_300_400"].fill(
             process=process,
             year=year,
@@ -1131,7 +1133,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_300_400],
         )
 
-        sel_slice_400_500 = selection_base & (np.array(jet1_pt) > 400) & (np.array(jet1_pt) < 500)
+        sel_slice_400_500 = sel_jet1 & (np.array(jet1_pt) > 400) & (np.array(jet1_pt) < 500)
         self._accumulator["2D_jet1_eta_phi_postHEM_400_500"].fill(
             process=process,
             year=year,
@@ -1140,7 +1142,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_400_500],
         )
 
-        sel_slice_500_700 = selection_base & (np.array(jet1_pt) > 500) & (np.array(jet1_pt) < 700)
+        sel_slice_500_700 = sel_jet1 & (np.array(jet1_pt) > 500) & (np.array(jet1_pt) < 700)
         self._accumulator["2D_jet1_eta_phi_postHEM_500_700"].fill(
             process=process,
             year=year,
@@ -1149,7 +1151,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_500_700],
         )
 
-        sel_slice_700_900 = selection_base & (np.array(jet1_pt) > 700) & (np.array(jet1_pt) < 900)
+        sel_slice_700_900 = sel_jet1 & (np.array(jet1_pt) > 700) & (np.array(jet1_pt) < 900)
         self._accumulator["2D_jet1_eta_phi_postHEM_700_900"].fill(
             process=process,
             year=year,
@@ -1158,7 +1160,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_700_900],
         )
 
-        sel_slice_900_Inf = selection_base & (np.array(jet1_pt) > 900)
+        sel_slice_900_Inf = sel_jet1 & (np.array(jet1_pt) > 900)
         self._accumulator["2D_jet1_eta_phi_postHEM_900_Inf"].fill(
             process=process,
             year=year,
@@ -1166,7 +1168,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             jet1_phi=jet1_phi[sel_slice_900_Inf],
             weight=weights[sel_slice_900_Inf],
         )
-        sel_slice_jet2 = selection_base &  np.array(has_jet2)
+        sel_slice_jet2 = sel_jet1 &  np.array(has_jet2)
         self._accumulator["2D_jet2_eta_phi_postHEM"].fill(
             process=process,
             year=year,
