@@ -458,6 +458,13 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "dR_muon_tau": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 5, name="dR_muon_tau", label="min #DeltaR(#mu, #tau)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
         }
 
     @property
@@ -882,13 +889,14 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         n_good_electrons = (n_electrons ==1) & (n_muons == 0)
         n_good_leptons = ((n_muons + n_electrons) == 1)
 
-        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
+        #tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
+        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1)
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) &  # temp commented
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            (ak.sum(tau_filter, axis=1) == 0) & # A new tau filter should be implemented
+            # (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
@@ -1411,6 +1419,20 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             year=year,
             dz_lepton=lepton.dz,
             weight=weights[sel_lepton]
+        )
+
+        taus_vse = taus[tau_filter]
+        dr_mask  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
+
+        # for each good muon: dR to the closest VSe-passing tau
+        _, dr_mu_tau = good_muons.nearest(taus_vse, return_metric=True)
+        dr_weights   = ak.broadcast_arrays(weights, good_muons.pt)[0]
+
+        self._accumulator["dR_muon_tau"].fill(
+            process=process,
+            year=year,
+            dR_muon_tau=ak.flatten(dr_mu_tau[dr_mask]),
+            weight=ak.flatten(dr_weights[dr_mask]),
         )
         return self._accumulator
 
