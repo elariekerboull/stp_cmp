@@ -201,6 +201,7 @@ plot_config = {
     #"ht": ("ht", "Ht",           "ht"),
     #"nTInt":      ("nTInt",      "nTrueInt",                  "nTrueInt"),
     #"PU_weights":      ("PU_weights",      "PU_weights",                  "PU_weights"),
+    "dR_muon_tau": ("dR_muon_tau", "min #DeltaR(#mu, #tau)", "dR_muon_tau"),
     
 }
 

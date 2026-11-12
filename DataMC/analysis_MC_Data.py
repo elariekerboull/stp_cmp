@@ -229,6 +229,30 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "2D_jet2_eta_phi_postHEM_200_300": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet2_eta_phi_postHEM_300_400": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet2_eta_phi_postHEM_400_500": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
             "2D_jet1_eta_phi_postHEM_110_200": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
@@ -889,8 +913,8 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         n_good_electrons = (n_electrons ==1) & (n_muons == 0)
         n_good_leptons = ((n_muons + n_electrons) == 1)
 
-        #tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
-        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1)
+        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
+        #tau_filter = (taus.idDeepTau2017v2p1VSe >= 1)
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) &  # temp commented
@@ -1185,6 +1209,16 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_jet2],
         )
 
+        for lo, hi in [(200, 300), (300, 400), (400, 500)]:
+            sel_slice_jet2_pt = sel_slice_jet2 & (np.array(jet2_pt) > lo) & (np.array(jet2_pt) < hi)
+            self._accumulator[f"2D_jet2_eta_phi_postHEM_{lo}_{hi}"].fill(
+                process=process,
+                year=year,
+                jet2_eta=jet2_eta[sel_slice_jet2_pt],
+                jet2_phi=jet2_phi[sel_slice_jet2_pt],
+                weight=weights[sel_slice_jet2_pt],
+            )
+
         sel_jet2 = selection_base & n_good_leptons & np.array(has_jet2)
         self._accumulator["jet2_pt"].fill(
             process=process,
@@ -1422,7 +1456,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         )
 
         taus_vse = taus[tau_filter]
-        dr_mask  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
+        dr_mask_mu  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
 
         # for each good muon: dR to the closest VSe-passing tau
         _, dr_mu_tau = good_muons.nearest(taus_vse, return_metric=True)
@@ -1431,8 +1465,21 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         self._accumulator["dR_muon_tau"].fill(
             process=process,
             year=year,
-            dR_muon_tau=ak.flatten(dr_mu_tau[dr_mask]),
-            weight=ak.flatten(dr_weights[dr_mask]),
+            dR_muon_tau=ak.flatten(dr_mu_tau[dr_mask_mu]),
+            weight=ak.flatten(dr_weights[dr_mask_mu]),
+        )
+
+        dr_mask_el  = ak.to_numpy(selection_base & n_good_electrons & (ak.num(taus_vse) > 0))
+
+        # for each good electron: dR to the closest VSe-passing tau
+        _, dr_el_tau = good_electrons.nearest(taus_vse, return_metric=True)
+        dr_weights   = ak.broadcast_arrays(weights, good_muons.pt)[0]
+
+        self._accumulator["dR_electron_tau"].fill(
+            process=process,
+            year=year,
+            dR_muon_tau=ak.flatten(dr_el_tau[dr_mask_el]),
+            weight=ak.flatten(dr_weights[dr_mask_el]),
         )
         return self._accumulator
 
