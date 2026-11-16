@@ -489,6 +489,13 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "dR_electron_tau": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 5, name="dR_electron_tau", label="min #DeltaR(#electron, #tau)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
         }
 
     @property
@@ -913,14 +920,23 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         n_good_electrons = (n_electrons ==1) & (n_muons == 0)
         n_good_leptons = ((n_muons + n_electrons) == 1)
 
-        tau_filter = (taus.idDeepTau2017v2p1VSe >= 1) & (taus.idDeepTau2017v2p1VSmu >= 1) & (taus.idDeepTau2017v2p1VSjet >=1)
-        #tau_filter = (taus.idDeepTau2017v2p1VSe >= 1)
+        def clean_taus(tau_obj, lepton, delta_r=0.5):
+            delta = tau_obj.metric_table(lepton)        # metric_table returns deltaR between two objects by default
+            return ak.all(delta >= delta_r, axis=2)   # True when no overlap (also if `others` is empty)
+
+        tau_clean_mask = clean_taus(taus, good_electrons) & clean_taus(taus, good_muons)
+        taus_cleaned = taus[tau_clean_mask]
+
+        tau_filter = ((taus_cleaned.idDeepTau2017v2p1VSe  >= 1) &
+                      (taus_cleaned.idDeepTau2017v2p1VSmu >= 1) &
+                      (taus_cleaned.idDeepTau2017v2p1VSjet >= 1))
+
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) &  # temp commented
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            # (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
+            (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
@@ -1455,7 +1471,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_lepton]
         )
 
-        taus_vse = taus[tau_filter]
+        taus_vse = taus[(taus.idDeepTau2017v2p1VSe >= 1) &
+                        (taus.idDeepTau2017v2p1VSmu >= 1) &
+                        (taus.idDeepTau2017v2p1VSjet >= 1)]
         dr_mask_mu  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
 
         # for each good muon: dR to the closest VSe-passing tau
@@ -1473,12 +1491,12 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
         # for each good electron: dR to the closest VSe-passing tau
         _, dr_el_tau = good_electrons.nearest(taus_vse, return_metric=True)
-        dr_weights   = ak.broadcast_arrays(weights, good_muons.pt)[0]
+        dr_weights   = ak.broadcast_arrays(weights, good_electrons.pt)[0]
 
         self._accumulator["dR_electron_tau"].fill(
             process=process,
             year=year,
-            dR_muon_tau=ak.flatten(dr_el_tau[dr_mask_el]),
+            dR_electron_tau=ak.flatten(dr_el_tau[dr_mask_el]),
             weight=ak.flatten(dr_weights[dr_mask_el]),
         )
         return self._accumulator
