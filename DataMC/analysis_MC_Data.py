@@ -929,11 +929,11 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
         tau_filter = ((taus_cleaned.idDeepTau2017v2p1VSe  >= 1) &
                       (taus_cleaned.idDeepTau2017v2p1VSmu >= 1) &
-                      (taus_cleaned.idDeepTau2017v2p1VSjet >= 1))
+                      (taus_cleaned.idDeepTau2017v2p1VSjet >= 16))
 
         selection_base = (
             (np.array(jet1_pt) > 110) &
-            (np.array(n_IsoTracks) == 0) &  # temp commented
+            (np.array(n_IsoTracks) == 0) & 
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
             (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
@@ -1471,9 +1471,9 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_lepton]
         )
 
-        taus_vse = taus[(taus.idDeepTau2017v2p1VSe >= 1) &
-                        (taus.idDeepTau2017v2p1VSmu >= 1) &
-                        (taus.idDeepTau2017v2p1VSjet >= 1)]
+        taus_vse = taus_cleaned[(taus_cleaned.idDeepTau2017v2p1VSe >= 1) &
+                        (taus_cleaned.idDeepTau2017v2p1VSmu >= 1) &
+                        (taus_cleaned.idDeepTau2017v2p1VSjet >= 1)]
         dr_mask_mu  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
 
         # for each good muon: dR to the closest VSe-passing tau
