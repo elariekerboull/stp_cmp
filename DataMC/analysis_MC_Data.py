@@ -940,7 +940,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
-            (jet2_missing | ((abs(dphi_jet1_jet2) < 2.5) & (jet2_pt > 60))) # Commented to try plotting without energy condition on pt jet 2 (line below)
+            (~jet2_missing & ((abs(dphi_jet1_jet2) < 2.5) & (jet2_pt > 60))) # Commented to try plotting without energy condition on pt jet 2 (line below)
             #(jet2_missing | ((abs(dphi_jet1_jet2) < 2.5)))
 
             # Only for non-leptonic case
