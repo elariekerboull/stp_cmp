@@ -24,8 +24,8 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
         # Load LumiMask objects at init time, on the main node
         golden_json = {
-            "2017": "/users/scormenier/stp/Datasets/LumiJson/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt",
-            "2018": "/users/scormenier/stp/Datasets/LumiJson/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt",
+            "2017": "/users/elarieke/stop_analysis/stp_cmp/Datasets/LumiJson/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt",
+            "2018": "/users/elarieke/stop_analysis/stp_cmp/Datasets/LumiJson/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt",
         }
         self.lumi_masks = {yr: LumiMask(path) for yr, path in golden_json.items()}
 
@@ -52,7 +52,6 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 hist.axis.Regular(60, -np.pi, np.pi, name="jet1_phi", label="phi", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
-
             "jet2_pt": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
@@ -74,47 +73,49 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
-            "jet3_pt": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(60, 100, 1000, name="jet3_pt", label="MET [GeV]", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # Only hadronic
 
-            "jet3_eta": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(49, 0, 2.4, name="jet3_eta", label="eta", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # "jet3_pt": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(60, 100, 1000, name="jet3_pt", label="MET [GeV]", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
 
-            "jet3_phi": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(60, -np.pi, np.pi, name="jet3_phi", label="phi", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # "jet3_eta": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(49, 0, 2.4, name="jet3_eta", label="eta", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
 
-            "jet4_pt": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(60, 100, 1000, name="jet4_pt", label="MET [GeV]", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # "jet3_phi": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(60, -np.pi, np.pi, name="jet3_phi", label="phi", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
 
-            "jet4_eta": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(49, 0, 2.4, name="jet4_eta", label="eta", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # "jet4_pt": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(60, 100, 1000, name="jet4_pt", label="MET [GeV]", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
 
-            "jet4_phi": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(60, -np.pi, np.pi, name="jet4_phi", label="phi", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
+            # "jet4_eta": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(49, 0, 2.4, name="jet4_eta", label="eta", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
+
+            # "jet4_phi": hist.Hist(
+            #     hist.axis.StrCategory([], growth=True, name="process"),
+            #     hist.axis.StrCategory([], growth=True, name="year"),
+            #     hist.axis.Regular(60, -np.pi, np.pi, name="jet4_phi", label="phi", underflow=True, overflow=True),
+            #     storage=hist.storage.Weight()
+            # ),
 
             "met": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
@@ -133,7 +134,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "mt": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 280, 600, name="mt", label="MT [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 0, 400, name="mt", label="MT [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -228,6 +229,30 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "2D_jet2_eta_phi_postHEM_200_300": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet2_eta_phi_postHEM_300_400": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "2D_jet2_eta_phi_postHEM_400_500": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(48, -2.4, 2.4, name="jet2_eta", label="jet2 eta"),
+                hist.axis.Regular(63, -np.pi, np.pi, name="jet2_phi", label="jet2 phi", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
             "2D_jet1_eta_phi_postHEM_110_200": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
@@ -284,27 +309,129 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
-            "pt_lepton": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
-
-            "pt_muon": hist.Hist(
-                hist.axis.StrCategory([], growth=True, name="process"),
-                hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
-                storage=hist.storage.Weight()
-            ),
 
             "pt_electron": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 0, 250, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
+            "phi_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -np.pi, np.pi, name="phi_electron", label="phi(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "eta_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -3, 3, name="eta_electron", label="eta(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "charge_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(2, -1.5, 1.5, name="charge_electron", label="charge(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "RelIso_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(20, 0, 1.0, name="RelIso_electron", label="RelIso(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "AbsIso_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(20, 0, 20, name="AbsIso_electron", label="AbsIso(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "dxy_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(10, 0, 10, name="dxy_electron", label="dxy(l) [mm]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "dz_electron": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(10, 0, 10, name="dz_electron", label="dz(l) [mm]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            # Muon histograms
+
+            "pt_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 250, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "phi_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -np.pi, np.pi, name="phi_muon", label="phi(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "eta_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(60, -3, 3, name="eta_muon", label="eta(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "charge_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(2, -1.5, 1.5, name="charge_muon", label="charge(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "RelIso_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(20, 0, 1.0, name="RelIso_muon", label="RelIso(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "AbsIso_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(20, 0, 20, name="AbsIso_muon", label="AbsIso(l)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "dxy_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(10, 0, 10, name="dxy_muon", label="dxy(l) [mm]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "dz_muon": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(10, 0, 10, name="dz_muon", label="dz(l) [mm]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            # Lepton histrograms
+            
+            "pt_lepton": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 250, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
 
             "phi_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
@@ -355,6 +482,20 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 storage=hist.storage.Weight()
             ),
 
+            "dR_muon_tau": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 5, name="dR_muon_tau", label="min #DeltaR(#mu, #tau)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
+            "dR_electron_tau": hist.Hist(
+                hist.axis.StrCategory([], growth=True, name="process"),
+                hist.axis.StrCategory([], growth=True, name="year"),
+                hist.axis.Regular(50, 0, 5, name="dR_electron_tau", label="min #DeltaR(#electron, #tau)", underflow=True, overflow=True),
+                storage=hist.storage.Weight()
+            ),
+
         }
 
     @property
@@ -367,10 +508,12 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         process, sample, year = dataset.split("__")
 
         #path = "/users/scormenier/stp/MC_Data/Reweighting/PU/" + year + "_UL/puWeights.json.gz"
-        #with gzip.open(path, "rt") as f:
-        #    pu_json_str = f.read().strip()
+        path = "/users/elarieke/stop_analysis/stp_cmp/DataMC/Reweighting/PU/" + year + "_UL/puWeights.json.gz"
+        with gzip.open(path, "rt") as f:
+            pu_json_str = f.read().strip()
 
-        jme_path = "/users/scormenier/stp/MC_Data/Reweighting/JME/"
+        #jme_path = "/users/elarieke/stop_analysis/stp_cmp/MC_Data/Reweighting/JME/"
+        jme_path = "/users/elarieke/stop_analysis/stp_cmp/DataMC/Reweighting/JME/"
 
         self.jerc_cset = correctionlib.CorrectionSet.from_file(jme_path + year + "_UL/jet_jerc.json.gz")
         self.jersmear_cset = correctionlib.CorrectionSet.from_file(jme_path + "jer_smear.json.gz")
@@ -572,7 +715,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         ]
 
         get_veto_mask = get_veto_map_mask(veto_jets, vetomap_corr, map_name="jetvetomap")
-        # events = events[~get_veto_mask] """ Commented until figured out why this jet veto """
+        events = events[~get_veto_mask] # Unommented but still not figured out why this jet veto 
 
 
         # Flag events belonging to the HEM-affected period (data: runs >= 319077,
@@ -589,26 +732,26 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
 
             # Object-level HEM veto (unchanged logic)
             veto = hem_event_veto_mask(events)
-            # events = events[~(events.in_hem_period & veto)] """ Commented until figured out """
+            events = events[~(events.in_hem_period & veto)]
 
-        # # Apply HEM veto for 2018 data and MC
-        # if year == "2018":
-        #     if is_data:
-        #         # Only apply the HEM veto to runs in RunB(>=319077)/C/D
-        #         run_in_hem_window = events.run >= self.hem_veto_run_min
-        #         veto = hem_event_veto_mask(events)
-        #         drop_mask = run_in_hem_window & veto
-        #         events = events[~drop_mask]
-        #     else:
-        #         # MC: randomly drop the equivalent fraction, reproducibly per-dataset
-        #         if self.mc_drop_fraction > 0:
-        #             draw = get_deterministic_uniform(
-        #                 dataset, events.run, events.luminosityBlock, events.event
-        #             )
-        #             in_hem_period = draw < self.mc_drop_fraction
-        #             veto = hem_event_veto_mask(events)
-        #             drop_mask = in_hem_period & veto
-        #             events = events[~drop_mask]
+        # Apply HEM veto for 2018 data and MC
+        if year == "2018":
+            if is_data:
+                # Only apply the HEM veto to runs in RunB(>=319077)/C/D
+                run_in_hem_window = events.run >= self.hem_veto_run_min
+                veto = hem_event_veto_mask(events)
+                drop_mask = run_in_hem_window & veto
+                events = events[~drop_mask]
+            else:
+                # MC: randomly drop the equivalent fraction, reproducibly per-dataset
+                if self.mc_drop_fraction > 0:
+                    draw = get_deterministic_uniform(
+                        dataset, events.run, events.luminosityBlock, events.event
+                    )
+                    in_hem_period = draw < self.mc_drop_fraction
+                    veto = hem_event_veto_mask(events)
+                    drop_mask = in_hem_period & veto
+                    events = events[~drop_mask]
         
         #Apply met filter flags
         met_filter_flags = [
@@ -627,7 +770,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             else:
                 print(f"Warning: Flag_{flag} not found in {dataset}, skipping")
 
-        # events = events[met_filter_mask] """Commented until understood """
+        events = events[met_filter_mask]
 
         jets = events.Jet
         muons = events.Muon
@@ -703,27 +846,33 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         n_IsoTracks = ak.num(refined_isotracks)
         n_jets = ak.num(good_jets)
         good_jets_pad = ak.pad_none(good_jets, 5)   
-        jet1_pt = ak.fill_none(good_jets_pad[:, 0].pt, np.nan)
         Ht = ak.sum(good_jets.pt, axis=1)
+
+        jet1_pt = ak.fill_none(good_jets_pad[:, 0].pt, np.nan)
         jet1_eta = ak.fill_none(good_jets_pad[:, 0].eta, np.nan)
         jet1_phi = ak.fill_none(good_jets_pad[:, 0].phi, np.nan)
+
+        jet2_pt = ak.fill_none(good_jets_pad[:, 1].pt, np.nan)
+        jet2_phi = ak.fill_none(good_jets_pad[:, 1].phi, np.nan)
+        jet2_eta = ak.fill_none(good_jets_pad[:, 1].eta, np.nan)
+        dphi_jet2 = np.array(ak.to_numpy(dphi(jet2_phi, met.phi)))
+        jet2_missing = np.isnan(dphi_jet2)
+
+        dphi_jet1_jet2 = np.array(ak.to_numpy(dphi(jet1_phi, jet2_phi)))
+
         """
         # Jets related
-        jet2_eta = ak.fill_none(good_jets_pad[:, 1].eta, np.nan)
         jet3_eta = ak.fill_none(good_jets_pad[:, 2].eta, np.nan)
         jet4_eta = ak.fill_none(good_jets_pad[:, 3].eta, np.nan)
-        jet2_phi = ak.fill_none(good_jets_pad[:, 1].phi, np.nan)
         jet3_phi = ak.fill_none(good_jets_pad[:, 2].phi, np.nan)
         jet4_phi = ak.fill_none(good_jets_pad[:, 3].phi, np.nan)
         jet5_phi = ak.fill_none(good_jets_pad[:, 4].phi, np.nan)
         dphi_jet1 = np.array(ak.to_numpy(dphi(jet1_phi, met.phi)))
-        dphi_jet2 = np.array(ak.to_numpy(dphi(jet2_phi, met.phi)))
         dphi_jet3 = np.array(ak.to_numpy(dphi(jet3_phi, met.phi)))
         dphi_jet4 = np.array(ak.to_numpy(dphi(jet4_phi, met.phi)))
         dphi_jet5 = np.array(ak.to_numpy(dphi(jet5_phi, met.phi)))
         # mindphi = np.nanmin(np.stack([abs(dphi_jet1), abs(dphi_jet2), abs(dphi_jet3), abs(dphi_jet4)], axis=1), axis=1)
 
-        jet2_missing = np.isnan(dphi_jet2)
         jet3_missing = np.isnan(dphi_jet3)
         jet4_missing = np.isnan(dphi_jet4)
         """
@@ -750,30 +899,52 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             hot_regions_veto = np.zeros(len(events), dtype=bool)
 
         #Isolation condition
-        good_iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
-        good_iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
+        iso_muon = (((muons.pt < 25) & ((muons.pfRelIso03_all*muons.pt) < 5)) | ((muons.pt >= 25) & (muons.pfRelIso03_all < 0.2)))
+        iso_electron = (((electrons.pt < 25) & ((electrons.pfRelIso03_all*electrons.pt) < 5)) | ((electrons.pt >= 25) & (electrons.pfRelIso03_all < 0.2)))
 
-        # Conditions on pt of muons and electrons
-        good_pt_muon = (muons.pt > 3.5)
-        good_pt_electron = (electrons.pt > 5)
+
+        id_iso_muon = (muons.mediumId) & iso_muon
+        id_iso_electron = (electrons.cutBased > 0) & iso_electron
+        
+        idiso_muons     = muons[id_iso_muon]  
+        idiso_electrons = electrons[id_iso_electron]
 
         # Cutbased electrons and medium muonID with isolation condition
-        good_electrons = (electrons.cutBased > 0) & good_iso_electron & good_pt_electron
-        good_muons = (muons.mediumId) & good_iso_muon & good_pt_muon
+        good_electrons = idiso_electrons[idiso_electrons.pt > 5]
+        good_muons = idiso_muons[idiso_muons.pt > 3]          
 
-        n_electrons = ak.sum(good_electrons, axis=1)
-        n_muons = ak.sum(good_muons,axis=1)
+        n_electrons = ak.num(good_electrons)
+        n_muons = ak.num(good_muons)
+
+        n_good_muons = (n_muons ==1) & (n_electrons == 0)
+        n_good_electrons = (n_electrons ==1) & (n_muons == 0)
+        n_good_leptons = ((n_muons + n_electrons) == 1)
+
+        def clean_taus(tau_obj, lepton, delta_r=0.5):
+            delta = tau_obj.metric_table(lepton)        # metric_table returns deltaR between two objects by default
+            return ak.all(delta >= delta_r, axis=2)   # True when no overlap (also if `others` is empty)
+
+        tau_clean_mask = clean_taus(taus, good_electrons) & clean_taus(taus, good_muons)
+        taus_cleaned = taus[tau_clean_mask]
+
+        tau_filter = ((taus_cleaned.idDeepTau2017v2p1VSe  >= 1) 
+                      #&(taus_cleaned.idDeepTau2017v2p1VSmu >= 1) 
+                      #&(taus_cleaned.idDeepTau2017v2p1VSjet >= 16)
+                      )
 
         selection_base = (
             (np.array(jet1_pt) > 110) &
-            (np.array(n_IsoTracks) == 0) &
+            (np.array(n_IsoTracks) == 0) & 
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            (ak.sum(taus.idDeepTau2017v2p1VSe >= 1, axis=1) == 0) &
-            ((n_muons + n_electrons) == 1) &            
+#            (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
+            (ak.sum(taus.idDeepTau2017v2p1VSe  >= 1, axis=1) == 0) & # Trying new tau filters
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
-            (abs(met_cleaning_chged) < 2.0)
+            (abs(met_cleaning_chged) < 2.0) & 
+            (jet2_missing | (jet2_pt <= 60) | (abs(dphi_jet1_jet2) < 2.5)) # Commented to try plotting without energy condition on pt jet 2 (line below)
+            # (jet2_missing | ((abs(dphi_jet1_jet2) < 2.5)))
+
             # Only for non-leptonic case
             #(abs(dphi_jet1) > 0.5) &
             #(jet2_missing | (abs(dphi_jet2) > 0.5)) &
@@ -790,26 +961,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
                 "pfRelIso03_all": newlep.pfRelIso03_all, "charge": newlep.charge, "dxy": newlep.dxy, "dz": newlep.dz},
             )
 
-        # Mt = met.pt[selection_base] + lepton.pt 
-        # selection base class trial - postponed
-        """
-        selection_base = SelectionBase(events, year=year, is_data=is_data).build(
-            jet1_pt=jet1_pt,
-            n_iso_tracks=n_IsoTracks,
-            n_jets=n_jets,
-            met=met,
-            taus=taus,
-            muons=muons,
-            electrons=electrons,
-            ht=Ht,
-            met_cleaning_calo=met_cleaning_calo,
-            met_cleaning_chged=met_cleaning_chged,
-            extra_masks=[~hem_met_phi_veto],
-            apply_trigger=is_data,
-            trigger_pass=get_trigger_or(events, TRIGGER_PATTERNS) if is_data else None,
-        )
-        """
-        selection_base = selection_base & ~hem_met_phi_veto
+        # selection_base = selection_base & ~hem_met_phi_veto # called twice?
 
         # --------------------
         # 4. Weights
@@ -844,21 +996,21 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             nTrueInt = ak.to_numpy(ak.fill_none(1, 0.0)).astype(np.float64)
 
 
-            """
+            
             # Commenting section to temporarily remove PU reweighting
-            pu_cset = correctionlib._core.CorrectionSet.from_string(pu_json_str)
-            pu_corr = pu_cset[PUkey]
-            nTrueInt = ak.to_numpy(ak.fill_none(events.Pileup.nTrueInt, 0.0)).astype(np.float64)
-            nTrueInt = np.ascontiguousarray(nTrueInt)
-            pu_weight_nominal = np.array([pu_corr.evaluate(float(x), "nominal") for x in nTrueInt])
-            # pu_weight_up      = np.array([pu_corr.evaluate(float(x), "up")      for x in nTrueInt])
-            # pu_weight_down     = np.array([pu_corr.evaluate(float(x), "down")   for x in nTrueInt])
-            genw = genw * pu_weight_nominal  # apply nominal PU weight to genWeight
-            """
+            # pu_cset = correctionlib._core.CorrectionSet.from_string(pu_json_str)
+            # pu_corr = pu_cset[PUkey]
+            # nTrueInt = ak.to_numpy(ak.fill_none(events.Pileup.nTrueInt, 0.0)).astype(np.float64)
+            # nTrueInt = np.ascontiguousarray(nTrueInt)
+            # pu_weight_nominal = np.array([pu_corr.evaluate(float(x), "nominal") for x in nTrueInt])
+            # # pu_weight_up      = np.array([pu_corr.evaluate(float(x), "up")      for x in nTrueInt])
+            # # pu_weight_down     = np.array([pu_corr.evaluate(float(x), "down")   for x in nTrueInt])
+            # genw = genw * pu_weight_nominal  # apply nominal PU weight to genWeight
+            
             weights = genw * lumi * xsec / Ngen
-        leptons = ak.concatenate([convert_lepton(muons[good_muons & selection_base]), convert_lepton(electrons[good_electrons & selection_base])], axis=1)
-
-        lepton = ak.firsts(leptons[selection_base])
+        leptons = ak.concatenate([convert_lepton(good_muons), convert_lepton(good_electrons)], axis=1)
+        sel_lepton = selection_base & n_good_leptons
+        lepton = ak.firsts(leptons[sel_lepton])
         has_jet2 = n_jets >= 2
         has_jet3 = n_jets >= 3
         has_jet4 = n_jets >= 4
@@ -900,12 +1052,15 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             ht=Ht[selection_base],
             weight=weights[selection_base]
         )
+        met_sel = met[sel_lepton]
+        dphi_lepton = dphi(lepton.phi, met_sel.phi)
+        mt_lepton = (np.sqrt(2*lepton.pt * met_sel.pt * (1-np.cos(dphi_lepton))))
 
         self._accumulator["mt"].fill(
             process=process,
             year=year,
-            mt=met.pt[selection_base] + lepton.pt,
-            weight=weights[selection_base]
+            mt=mt_lepton,
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["njet"].fill(
@@ -948,61 +1103,60 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         )
 
         #sel_slice1 = selection_base & (np.array(jet1_pt) > 500) & np.array(has_jet1)
+
+        # 2D accumulators
+
+        sel_jet1 = selection_base & n_good_leptons
+
         self._accumulator["2D_jet1_eta_phi_postHEM"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
-        )
-        self._accumulator["pt_lepton"].fill(
-            process=process,
-            year=year,
-            pt_lepton = lepton.pt,
-            weight=weights[selection_base]
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone1"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone2"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone3"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone4"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
         self._accumulator["2D_jet1_eta_phi_postHEM_zone5"].fill(
             process=process,
             year=year,
-            jet1_eta=jet1_eta[selection_base],
-            jet1_phi=jet1_phi[selection_base],
-            weight=weights[selection_base],
+            jet1_eta=jet1_eta[sel_jet1],
+            jet1_phi=jet1_phi[sel_jet1],
+            weight=weights[sel_jet1],
         )
 
-        sel_slice_110_200 = selection_base & (np.array(jet1_pt) > 110) & (np.array(jet1_pt) < 200)
+        sel_slice_110_200 = sel_jet1 & (np.array(jet1_pt) > 110) & (np.array(jet1_pt) < 200)
         self._accumulator["2D_jet1_eta_phi_postHEM_110_200"].fill(
             process=process,
             year=year,
@@ -1011,7 +1165,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_110_200],
         )
 
-        sel_slice_200_300 = selection_base & (np.array(jet1_pt) > 200) & (np.array(jet1_pt) < 300)
+        sel_slice_200_300 = sel_jet1 & (np.array(jet1_pt) > 200) & (np.array(jet1_pt) < 300)
         self._accumulator["2D_jet1_eta_phi_postHEM_200_300"].fill(
             process=process,
             year=year,
@@ -1020,7 +1174,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_200_300],
         )
 
-        sel_slice_300_400 = selection_base & (np.array(jet1_pt) > 300) & (np.array(jet1_pt) < 400)
+        sel_slice_300_400 = sel_jet1 & (np.array(jet1_pt) > 300) & (np.array(jet1_pt) < 400)
         self._accumulator["2D_jet1_eta_phi_postHEM_300_400"].fill(
             process=process,
             year=year,
@@ -1029,7 +1183,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_300_400],
         )
 
-        sel_slice_400_500 = selection_base & (np.array(jet1_pt) > 400) & (np.array(jet1_pt) < 500)
+        sel_slice_400_500 = sel_jet1 & (np.array(jet1_pt) > 400) & (np.array(jet1_pt) < 500)
         self._accumulator["2D_jet1_eta_phi_postHEM_400_500"].fill(
             process=process,
             year=year,
@@ -1038,7 +1192,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_400_500],
         )
 
-        sel_slice_500_700 = selection_base & (np.array(jet1_pt) > 500) & (np.array(jet1_pt) < 700)
+        sel_slice_500_700 = sel_jet1 & (np.array(jet1_pt) > 500) & (np.array(jet1_pt) < 700)
         self._accumulator["2D_jet1_eta_phi_postHEM_500_700"].fill(
             process=process,
             year=year,
@@ -1047,7 +1201,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_500_700],
         )
 
-        sel_slice_700_900 = selection_base & (np.array(jet1_pt) > 700) & (np.array(jet1_pt) < 900)
+        sel_slice_700_900 = sel_jet1 & (np.array(jet1_pt) > 700) & (np.array(jet1_pt) < 900)
         self._accumulator["2D_jet1_eta_phi_postHEM_700_900"].fill(
             process=process,
             year=year,
@@ -1056,7 +1210,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_700_900],
         )
 
-        sel_slice_900_Inf = selection_base & (np.array(jet1_pt) > 900)
+        sel_slice_900_Inf = sel_jet1 & (np.array(jet1_pt) > 900)
         self._accumulator["2D_jet1_eta_phi_postHEM_900_Inf"].fill(
             process=process,
             year=year,
@@ -1064,8 +1218,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             jet1_phi=jet1_phi[sel_slice_900_Inf],
             weight=weights[sel_slice_900_Inf],
         )
-
-        sel_slice_jet2 = selection_base &  np.array(has_jet2)
+        sel_slice_jet2 = sel_jet1 &  np.array(has_jet2)
         self._accumulator["2D_jet2_eta_phi_postHEM"].fill(
             process=process,
             year=year,
@@ -1074,7 +1227,17 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_slice_jet2],
         )
 
-        sel_jet2 = selection_base & np.array(has_jet2)
+        for lo, hi in [(200, 300), (300, 400), (400, 500)]:
+            sel_slice_jet2_pt = sel_slice_jet2 & (np.array(jet2_pt) > lo) & (np.array(jet2_pt) < hi)
+            self._accumulator[f"2D_jet2_eta_phi_postHEM_{lo}_{hi}"].fill(
+                process=process,
+                year=year,
+                jet2_eta=jet2_eta[sel_slice_jet2_pt],
+                jet2_phi=jet2_phi[sel_slice_jet2_pt],
+                weight=weights[sel_slice_jet2_pt],
+            )
+
+        sel_jet2 = selection_base & n_good_leptons & np.array(has_jet2)
         self._accumulator["jet2_pt"].fill(
             process=process,
             year=year,
@@ -1096,6 +1259,8 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_jet2]
         )
 
+        # Hadronic only
+        """
         sel_jet3 = selection_base & np.array(has_jet3)
         self._accumulator["jet3_pt"].fill(
             process=process,
@@ -1138,44 +1303,145 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             year=year,
             jet4_phi=jet4_phi[sel_jet4],
             weight=weights[sel_jet4]
-        muon_mask = selection_base & good_muons
-        muon_weights = ak.broadcast_arrays(weights, muons.pt)[0]
+        )
+        """
+
+        # Muon accumulators
+
+        muon_mask = selection_base & n_good_muons
+        muon_weights = ak.broadcast_arrays(weights, good_muons.pt)[0]
         self._accumulator["pt_muon"].fill(
             process=process,
             year=year,
-            pt_muon=ak.flatten(muons.pt[muon_mask]),
+            pt_muon=ak.flatten(good_muons.pt[muon_mask]),
             weight=ak.flatten(muon_weights[muon_mask]),
         )
 
-        electron_mask = selection_base & good_electrons
-        electron_weights = ak.broadcast_arrays(weights, electrons.pt)[0]
+        self._accumulator["phi_muon"].fill(
+            process=process,
+            year=year,
+            phi_muon=ak.flatten(good_muons.phi[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+        self._accumulator["eta_muon"].fill(
+            process=process,
+            year=year,
+            eta_muon=ak.flatten(good_muons.eta[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+        self._accumulator["RelIso_muon"].fill(
+            process=process,
+            year=year,
+            RelIso_muon=ak.flatten(good_muons.pfRelIso03_all[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+        self._accumulator["AbsIso_muon"].fill(
+            process=process,
+            year=year,
+            AbsIso_muon=ak.flatten(good_muons.pfRelIso03_all[muon_mask]*good_muons.pt[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+        self._accumulator["dxy_muon"].fill(
+            process=process,
+            year=year,
+            dxy_muon=ak.flatten(good_muons.dxy[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+        self._accumulator["dz_muon"].fill(
+            process=process,
+            year=year,
+            dz_muon=ak.flatten(good_muons.dz[muon_mask]),
+            weight=ak.flatten(muon_weights[muon_mask])
+        )
+
+
+        # Electron accumulators
+
+        electron_mask = selection_base & n_good_electrons
+        electron_weights = ak.broadcast_arrays(weights, good_electrons.pt)[0]
         
         self._accumulator["pt_electron"].fill(
             process=process,
             year=year,
-            pt_electron = ak.flatten(electrons.pt[electron_mask]),
+            pt_electron = ak.flatten(good_electrons.pt[electron_mask]),
             weight=ak.flatten(electron_weights[electron_mask]),
+        )
+
+        self._accumulator["phi_electron"].fill(
+            process=process,
+            year=year,
+            phi_electron=ak.flatten(good_electrons.phi[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        self._accumulator["eta_electron"].fill(
+            process=process,
+            year=year,
+            eta_electron=ak.flatten(good_electrons.eta[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        self._accumulator["RelIso_electron"].fill(
+            process=process,
+            year=year,
+            RelIso_electron=ak.flatten(good_electrons.pfRelIso03_all[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        self._accumulator["AbsIso_electron"].fill(
+            process=process,
+            year=year,
+            AbsIso_electron=ak.flatten(good_electrons.pfRelIso03_all[electron_mask]*good_electrons.pt[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        self._accumulator["dxy_electron"].fill(
+            process=process,
+            year=year,
+            dxy_electron=ak.flatten(good_electrons.dxy[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        self._accumulator["dz_electron"].fill(
+            process=process,
+            year=year,
+            dz_electron=ak.flatten(good_electrons.dz[electron_mask]),
+            weight=ak.flatten(electron_weights[electron_mask])
+        )
+
+        # Lepton accumulators
+
+        self._accumulator["pt_lepton"].fill(
+            process=process,
+            year=year,
+            pt_lepton = lepton.pt,
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["phi_lepton"].fill(
             process=process,
             year=year,
             phi_lepton=lepton.phi,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["eta_lepton"].fill(
             process=process,
             year=year,
             eta_lepton=lepton.eta,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["charge_lepton"].fill(
             process=process,
             year=year,
             charge_lepton=lepton.charge,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
 
@@ -1183,28 +1449,58 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             process=process,
             year=year,
             RelIso_lepton=lepton.pfRelIso03_all,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["AbsIso_lepton"].fill(
             process=process,
             year=year,
             AbsIso_lepton=(lepton.pfRelIso03_all*lepton.pt),
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["dxy_lepton"].fill(
             process=process,
             year=year,
             dxy_lepton=lepton.dxy,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
         )
 
         self._accumulator["dz_lepton"].fill(
             process=process,
             year=year,
             dz_lepton=lepton.dz,
-            weight=weights[selection_base]
+            weight=weights[sel_lepton]
+        )
+
+        taus_vse = taus_cleaned[(taus_cleaned.idDeepTau2017v2p1VSe >= 1) 
+                                &(taus_cleaned.idDeepTau2017v2p1VSmu >= 1) 
+                                &(taus_cleaned.idDeepTau2017v2p1VSjet >= 1)
+                                ]
+        dr_mask_mu  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
+
+        # for each good muon: dR to the closest VSe-passing tau
+        _, dr_mu_tau = good_muons.nearest(taus_vse, return_metric=True)
+        dr_weights   = ak.broadcast_arrays(weights, good_muons.pt)[0]
+
+        self._accumulator["dR_muon_tau"].fill(
+            process=process,
+            year=year,
+            dR_muon_tau=ak.flatten(dr_mu_tau[dr_mask_mu]),
+            weight=ak.flatten(dr_weights[dr_mask_mu]),
+        )
+
+        dr_mask_el  = ak.to_numpy(selection_base & n_good_electrons & (ak.num(taus_vse) > 0))
+
+        # for each good electron: dR to the closest VSe-passing tau
+        _, dr_el_tau = good_electrons.nearest(taus_vse, return_metric=True)
+        dr_weights   = ak.broadcast_arrays(weights, good_electrons.pt)[0]
+
+        self._accumulator["dR_electron_tau"].fill(
+            process=process,
+            year=year,
+            dR_electron_tau=ak.flatten(dr_el_tau[dr_mask_el]),
+            weight=ak.flatten(dr_weights[dr_mask_el]),
         )
         return self._accumulator
 
