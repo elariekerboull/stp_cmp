@@ -313,7 +313,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "pt_electron": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 0, 250, name="pt_electron", label="pT(e) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -371,7 +371,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "pt_muon": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 0, 250, name="pt_muon", label="pT(muon) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -429,7 +429,7 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             "pt_lepton": hist.Hist(
                 hist.axis.StrCategory([], growth=True, name="process"),
                 hist.axis.StrCategory([], growth=True, name="year"),
-                hist.axis.Regular(50, 3, 253, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
+                hist.axis.Regular(50, 0, 250, name="pt_lepton", label="pT(l) [GeV]", underflow=True, overflow=True),
                 storage=hist.storage.Weight()
             ),
 
@@ -936,12 +936,12 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             (np.array(n_IsoTracks) == 0) & 
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
+            #(ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
-            (~jet2_missing & ((abs(dphi_jet1_jet2) < 2.5) & (jet2_pt > 60))) # Commented to try plotting without energy condition on pt jet 2 (line below)
-            #(jet2_missing | ((abs(dphi_jet1_jet2) < 2.5)))
+            (jet2_missing | (jet2_pt <= 60) | (abs(dphi_jet1_jet2) < 2.5)) # Commented to try plotting without energy condition on pt jet 2 (line below)
+            # (jet2_missing | ((abs(dphi_jet1_jet2) < 2.5)))
 
             # Only for non-leptonic case
             #(abs(dphi_jet1) > 0.5) &
@@ -1471,9 +1471,10 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
             weight=weights[sel_lepton]
         )
 
-        taus_vse = taus_cleaned[(taus_cleaned.idDeepTau2017v2p1VSe >= 1) &
-                        (taus_cleaned.idDeepTau2017v2p1VSmu >= 1) &
-                        (taus_cleaned.idDeepTau2017v2p1VSjet >= 1)]
+        taus_vse = taus_cleaned[(taus_cleaned.idDeepTau2017v2p1VSe >= 1) 
+                                &(taus_cleaned.idDeepTau2017v2p1VSmu >= 1) 
+                                &(taus_cleaned.idDeepTau2017v2p1VSjet >= 1)
+                                ]
         dr_mask_mu  = ak.to_numpy(selection_base & n_good_muons & (ak.num(taus_vse) > 0))
 
         # for each good muon: dR to the closest VSe-passing tau
