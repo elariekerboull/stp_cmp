@@ -927,16 +927,17 @@ class StopAnalysisMC_Data(processor.ProcessorABC):
         tau_clean_mask = clean_taus(taus, good_electrons) & clean_taus(taus, good_muons)
         taus_cleaned = taus[tau_clean_mask]
 
-        tau_filter = ((taus_cleaned.idDeepTau2017v2p1VSe  >= 1) &
-                      (taus_cleaned.idDeepTau2017v2p1VSmu >= 1) &
-                      (taus_cleaned.idDeepTau2017v2p1VSjet >= 16))
+        tau_filter = ((taus_cleaned.idDeepTau2017v2p1VSe  >= 1) 
+                      #&(taus_cleaned.idDeepTau2017v2p1VSmu >= 1) 
+                      #&(taus_cleaned.idDeepTau2017v2p1VSjet >= 16)
+                      )
 
         selection_base = (
             (np.array(jet1_pt) > 110) &
             (np.array(n_IsoTracks) == 0) & 
             (np.array(n_jets) >= 1) &
             (np.array(met.pt) > 280) &
-            #(ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
+            (ak.sum(tau_filter, axis=1) == 0) & # Trying new tau filters
             (np.array(Ht) > 200) &
             (met_cleaning_calo < 0.5) &
             (abs(met_cleaning_chged) < 2.0) & 
